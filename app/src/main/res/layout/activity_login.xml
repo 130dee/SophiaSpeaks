@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/green"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="c12728815.dit.ie.find_a_side.LoginActivity"
+    android:clickable="false">
+
+
+
+
+
+    <EditText
+        android:background="@color/white"
+        android:layout_marginTop="@dimen/activity_logscreen"
+        android:padding="@dimen/activity_editbox"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/loginEmail"
+        android:hint="Enter Email"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+
+
+    <EditText
+        android:background="@color/white"
+        android:padding="@dimen/activity_editbox"
+        android:layout_marginTop="@dimen/activity_logscreen"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/loginPassword"
+        android:hint="Enter Password"
+        android:layout_below="@+id/loginEmail"
+        android:layout_centerHorizontal="true" />
+
+
+
+    <ImageButton
+        android:background="@color/green"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/login"
+        android:id="@+id/SubmitLogin"
+        android:layout_below="@+id/loginPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/activity_logscreen"/>
+
+
+
+
+
+
+</RelativeLayout>
