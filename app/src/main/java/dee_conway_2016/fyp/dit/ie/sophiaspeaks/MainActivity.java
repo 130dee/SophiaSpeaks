@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,11 +18,13 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ImageButton goToCamera,shownAlbum;
+    TextToSpeech voice;
 
     static int TAKE_PIC =1;
     Uri outPutfileUri;
@@ -33,6 +36,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        voice=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    voice.setLanguage(Locale.UK);
+                }
+            }
+        });
 
 
 
@@ -69,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if(v == goToCamera) {
+            String sayThis = "Hey Sophia, lets take a photograph";
+            voice.speak(sayThis, TextToSpeech.QUEUE_FLUSH, null);
             Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             File file = new File(Environment.getExternalStorageDirectory(),
                     "MyPhoto.jpg");
@@ -78,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if(v == shownAlbum) {
+            String sayThis = "lets have a look at some photos";
+            voice.speak(sayThis, TextToSpeech.QUEUE_FLUSH, null);
             Intent intent = new Intent(this,AlbumActivity.class);
             startActivity(intent);
         }
