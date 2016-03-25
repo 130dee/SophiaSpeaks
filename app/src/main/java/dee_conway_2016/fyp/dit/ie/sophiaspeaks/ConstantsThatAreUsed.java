@@ -11,7 +11,5 @@ public class ConstantsThatAreUsed {
         this.wifiDirectConnection = b;
 
     }
-    public Boolean getWifiDirectConnected(){
-        return wifiDirectConnection;
-    }
+   
 }
