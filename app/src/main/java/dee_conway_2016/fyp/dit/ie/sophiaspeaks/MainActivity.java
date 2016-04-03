@@ -1,10 +1,12 @@
 package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,9 +25,10 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private ImageButton goToCamera,shownAlbum;
+    public static final String TAG = "";
+    public static final String SHARED = "globals";
+    private Button open;
     TextToSpeech voice;
-
     static int TAKE_PIC =1;
     Uri outPutfileUri;
 
@@ -37,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
         voice=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -47,12 +52,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
+        open = (Button) findViewById(R.id.button);
 
-        goToCamera = (ImageButton) findViewById(R.id.cameraButton);
-        shownAlbum = (ImageButton) findViewById(R.id.albumButton);
-
-        goToCamera.setOnClickListener(this);
-        shownAlbum.setOnClickListener(this);
+        open.setOnClickListener(this);
     }
 
     @Override
@@ -80,23 +82,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if(v == goToCamera) {
-            String sayThis = "Hey Sophia, lets take a photograph";
-            voice.speak(sayThis, TextToSpeech.QUEUE_FLUSH, null);
-            Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            File file = new File(Environment.getExternalStorageDirectory(),
-                    "MyPhoto.jpg");
-            outPutfileUri = Uri.fromFile(file);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutfileUri);
-            startActivityForResult(intent, TAKE_PIC);
-        }
 
-        if(v == shownAlbum) {
-            String sayThis = "lets have a look at some photos";
-            voice.speak(sayThis, TextToSpeech.QUEUE_FLUSH, null);
-            Intent intent = new Intent(this,AlbumActivity.class);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this,LoginActivity.class);
+        startActivity(intent);
+
 
     }
 
@@ -116,4 +105,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
 
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        SharedPreferences shared = getSharedPreferences(SHARED, 0);
+        String user = shared.getString("name", "nancy");
+        this.setTitle(user);
+        if (shared.getString("amLogged","false").equalsIgnoreCase("true")){
+            goHome();
+
+        }
+
+    }
+     public void goHome(){
+         Intent intent = new Intent(this, ParentView.class);
+         startActivity(intent);
+     }
 }

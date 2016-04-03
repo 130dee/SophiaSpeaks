@@ -1,6 +1,9 @@
 package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -8,8 +11,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -30,28 +35,55 @@ import java.util.Map;
  */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
+    TextToSpeech voice;
+    public static final String SHARED = "globals";
+    public static final String myUsername = "username";
     public static final String myEmail = "email";
     public static final String mypwordKey = "password";
-    public static final String LoginURL = "http://52.50.76.1/fyp/remotelogin.php";
+    public static final String LoginURL = "http://52.50.76.1/sophia/remotelogin.php";
 
+
+    private String mUsername;
+    private String mEmailAddress;
+    private String mPword;
+    private String amLoggedIn = "false";
+    private String myName;
+
+    private EditText userNameView;
     private EditText emailLoginView;
     private EditText passwordLoginView;
+    private TextView error;
 
-    ImageButton logMeIn;
+
+
+    Button logMeIn;
+    Button registerMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        userNameView = (EditText)findViewById(R.id.editUserName);
         emailLoginView = (EditText) findViewById(R.id.loginEmail);
         passwordLoginView = (EditText) findViewById(R.id.loginPassword);
 
-        logMeIn = (ImageButton) findViewById(R.id.SubmitLogin);
+        logMeIn = (Button) findViewById(R.id.submitLogin);
         logMeIn.setOnClickListener(this);
+        registerMe = (Button)findViewById(R.id.register);
+        registerMe.setOnClickListener(this);
+
+        error = (TextView) findViewById(R.id.loginError);
+        assert error != null;
+        assert error != null;
+        error.setVisibility(View.INVISIBLE);
+
+        //for testing
 
         emailLoginView.setText("130dee@gmail.com");
         passwordLoginView.setText("super");
+
 
     }
 
@@ -83,30 +115,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        if(v==logMeIn){
+            login();
+        }
+        if(v==registerMe){
+            register();
+        }
 
-        LogMeIn();
+
 
     }
+    public void register(){
+        Intent intent = new Intent(this, Register.class);
+        intent.putExtra("type","parent");
+        startActivity(intent);
+    }
 
-    public void LogMeIn(){
+    public void login(){
 
+        userNameView.setError(null);
         emailLoginView.setError(null);
         passwordLoginView.setError(null);
 
-        String email = emailLoginView.getText().toString().trim();
-        String pWord = passwordLoginView.getText().toString().trim();
+        mUsername = userNameView.getText().toString().trim();
+        mEmailAddress = emailLoginView.getText().toString().trim();
+        mPword = passwordLoginView.getText().toString().trim();
 
         boolean cancel = false;
         View focusView = null;
 
         //check if email has been entered, that it is a valid email address
         //and that it has not been registered before
-        if (TextUtils.isEmpty(email)){
+        if (TextUtils.isEmpty(mUsername)){
+            userNameView.setError(getString(R.string.error_field_required));
+            focusView = userNameView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(mEmailAddress)){
             emailLoginView.setError(getString(R.string.error_field_required));
             focusView = emailLoginView;
             cancel = true;
         }
-        else if(!isEmailValid(email)) {
+        else if(!isEmailValid(mEmailAddress)) {
             emailLoginView.setError(getString(R.string.error_invalid_email));
             focusView = emailLoginView;
             cancel = true;
@@ -114,7 +164,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         // check that password has been entered and that it matches email address
-        if (TextUtils.isEmpty(pWord)){
+        if (TextUtils.isEmpty(mPword)){
             passwordLoginView.setError(getString(R.string.error_field_required));
             focusView = passwordLoginView;
             cancel = true;
@@ -122,9 +172,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //if email and password are entered
        if(!cancel){
            cancel = false;
-           logMeIn(email,pWord);
-           passwordLoginView.setError(getString(R.string.no_user_found));
-           focusView = passwordLoginView;
+           logMeIn(mUsername,mEmailAddress,mPword);
+
 
 
        }
@@ -135,34 +184,53 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return email.contains("@")&& email.contains(".");
     }
 
-    private void logMeIn(String a, String b){
+
+
+
+
+
+    private void logMeIn(String a, String b,String c){
         Log.d("myTag", "Trying To login");
-        final String checkThisEmail = a;
-        final String checkThisPword = b;
+        final String checkThisUname =a;
+        final String checkThisEmail = b;
+        final String checkThisPword = c;
 
         StringRequest myQuery = new StringRequest(Request.Method.POST,LoginURL,new Response.Listener<String>(){
             @Override
             public void onResponse(String comeBack){
-                if(comeBack.trim().equals("exists")){
+                String type = comeBack.trim();
+                if(!type.equalsIgnoreCase("not found")){
                     Log.d("myTag", "found");
+                    SharedPreferences shared = getSharedPreferences(SHARED,0);
+                    SharedPreferences.Editor editor = shared.edit();
+                    editor.putString("name",checkThisUname);
+                    editor.putString("email",checkThisEmail);
+                    editor.putString("amLogged","true");
+                    editor.putString("type",type);
+                    editor.commit();
                     finish();
                 }else{
-
+                    error.setVisibility(View.VISIBLE);
                     Log.d("myTag", "notfound");
                     Toast.makeText(LoginActivity.this,comeBack,Toast.LENGTH_LONG).show();
                 }
             }
         },
+
+
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
                         Toast.makeText(LoginActivity.this,"ERROR",Toast.LENGTH_LONG).show();
                     }
                 }
+
+
         ){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError{
                 Map<String, String> map = new HashMap<String, String>();
+                map.put(myUsername, checkThisUname);
                 map.put(myEmail, checkThisEmail);
                 map.put(mypwordKey, checkThisPword);
                 return map;
@@ -172,6 +240,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         RequestQueue thisQ = Volley.newRequestQueue(this);
         thisQ.add(myQuery);
     }
-
-
 }

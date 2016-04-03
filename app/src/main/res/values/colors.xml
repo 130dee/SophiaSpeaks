@@ -7,9 +7,9 @@
     <color name="blue">#ff49b5ff</color>
     <color name="lightblue">#ffb7ffff</color>
     <color name="red">#ffff1811</color>
-    <color name="white">#fffefffd</color>
+    <color name="white">#99FFFFFF</color>
     <color name="yellow">#fffffb1f</color>
     <color name="black">#ff000000</color>
     <color name="green">#FF11B377</color>
-    <color name="pink">#fcd9e9</color>
+    <color name="pink">#ffb3f6</color>
 </resources>
