@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextToSpeech voice;
     static int TAKE_PIC =1;
     Uri outPutfileUri;
+    public SharedPreferences shared;
 
 
     @Override
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        shared = getSharedPreferences(SHARED, 0);
 
 
 
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onResume(){
         super.onResume();
         SharedPreferences shared = getSharedPreferences(SHARED, 0);
-        String user = shared.getString("name", "nancy");
+        String user = shared.getString("name", "LogIn");
         this.setTitle(user);
         if (shared.getString("amLogged","false").equalsIgnoreCase("true")){
             goHome();
@@ -119,7 +121,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
      public void goHome(){
-         Intent intent = new Intent(this, ParentView.class);
-         startActivity(intent);
+         String userType = shared.getString("usertype","user");
+         if(userType.equalsIgnoreCase("child")){
+             Intent intent = new Intent(this,HomeActivity.class);
+             startActivity(intent);
+         }else{
+             Toast.makeText(MainActivity.this,userType,Toast.LENGTH_LONG).show();
+             SharedPreferences.Editor editor = shared.edit();
+             editor.putString("amLogged","false");
+             editor.commit();
+         }
+
      }
 }

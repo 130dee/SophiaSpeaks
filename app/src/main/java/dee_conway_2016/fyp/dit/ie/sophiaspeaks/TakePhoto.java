@@ -69,6 +69,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     double x,y;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -217,11 +218,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         if(upload == true){
             uploadThis(toSpeak ,tagOn, xyCo_ords, time_date);
         }
-        // Creates an Intent that will load a map of San Francisco
-        /*Uri gmmIntentUri = Uri.parse("geo:0,0?q="+x+","+y+"loc");
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
-        startActivity(mapIntent);*/
+
 
     }
     public String convertBmap(Bitmap imageBitmap){
@@ -231,12 +228,6 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         String imageIsReady = Base64.encodeToString(bytes, Base64.DEFAULT);
         return imageIsReady;
     }
-
-
-
-
-
-
 
 
     public void uploadThis(String tag , String mailtag, String xy, String td){
@@ -251,6 +242,12 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                     public void onResponse(String response) {
                         doingShit.dismiss();
                         Toast.makeText(TakePhoto.this, response, Toast.LENGTH_LONG).show();
+                        if(response.equalsIgnoreCase("success")){
+                            voice.speak("that was sent to mommy", TextToSpeech.QUEUE_FLUSH, null);
+                            finish();
+                        }else{
+                            voice.speak(response, TextToSpeech.QUEUE_FLUSH, null);
+                        }
                     }
                 },
 
@@ -260,6 +257,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                     public void onErrorResponse(VolleyError error) {
                         doingShit.dismiss();
                         Toast.makeText(TakePhoto.this, error.toString(), Toast.LENGTH_LONG).show();
+                        voice.speak("there may be an internet error", TextToSpeech.QUEUE_FLUSH, null);
                     }
                 }
 

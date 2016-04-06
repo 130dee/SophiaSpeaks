@@ -15,6 +15,7 @@
 
     <ImageView
         android:layout_width="match_parent"
+        android:hapticFeedbackEnabled="true"
         android:layout_height="match_parent"
         android:id="@+id/showThisImage"
         android:layout_alignParentTop="true"
@@ -24,6 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/what"
+        android:hapticFeedbackEnabled="true"
         android:src="@drawable/what"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -35,6 +37,7 @@
         android:id="@+id/happy"
         android:src="@drawable/happydace"
         android:layout_centerVertical="true"
+        android:hapticFeedbackEnabled="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:background="@android:color/transparent"/>
@@ -47,6 +50,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:hapticFeedbackEnabled="true"
         android:background="@android:color/transparent"/>
 
     <ImageButton
@@ -56,5 +60,6 @@
         android:id="@+id/cancel"
         android:layout_alignBottom="@+id/showThisImage"
         android:layout_centerHorizontal="true"
+        android:hapticFeedbackEnabled="true"
         android:background="@android:color/transparent" />
 </RelativeLayout>

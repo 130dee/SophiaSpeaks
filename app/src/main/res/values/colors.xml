@@ -12,4 +12,6 @@
     <color name="black">#ff000000</color>
     <color name="green">#FF11B377</color>
     <color name="pink">#ffb3f6</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

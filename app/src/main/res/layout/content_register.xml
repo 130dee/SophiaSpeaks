@@ -22,7 +22,9 @@
         android:id="@+id/uNameBox"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="37dp" />
+        android:layout_marginTop="37dp"
+        android:hapticFeedbackEnabled="true"
+        />
 
     <EditText
         android:layout_width="wrap_content"
@@ -33,7 +35,8 @@
         android:layout_below="@+id/uNameBox"
         android:layout_alignLeft="@+id/uNameBox"
         android:layout_alignStart="@+id/uNameBox"
-        android:hint="Password" />
+        android:hint="Password"
+        android:hapticFeedbackEnabled="true"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -44,7 +47,8 @@
         android:id="@+id/fNameBox"
         android:layout_below="@+id/passwordBox"
         android:layout_alignLeft="@+id/passwordBox"
-        android:layout_alignStart="@+id/passwordBox" />
+        android:layout_alignStart="@+id/passwordBox"
+        android:hapticFeedbackEnabled="true"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -55,7 +59,9 @@
         android:id="@+id/lNameBox"
         android:layout_below="@+id/fNameBox"
         android:layout_alignLeft="@+id/fNameBox"
-        android:layout_alignStart="@+id/fNameBox" />
+        android:layout_alignStart="@+id/fNameBox"
+        android:hapticFeedbackEnabled="true"
+        />
 
     <EditText
         android:layout_width="wrap_content"
@@ -74,6 +80,7 @@
         android:text="Register"
         android:id="@+id/submitRegister"
         android:layout_marginTop="71dp"
+        android:hapticFeedbackEnabled="true"
         android:layout_below="@+id/emailBox"
         android:layout_centerHorizontal="true" />
 
@@ -86,5 +93,6 @@
         android:text="Medium Text"
         android:id="@+id/errorView"
         android:layout_alignParentBottom="true"
+        android:hapticFeedbackEnabled="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

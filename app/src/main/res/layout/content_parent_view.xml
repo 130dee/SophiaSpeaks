@@ -33,7 +33,8 @@
             android:text="Add Child"
             android:id="@+id/addChild"
             android:layout_row="0"
-            android:layout_column="0" />
+            android:layout_column="0"
+            android:hapticFeedbackEnabled="true"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -49,7 +50,8 @@
             android:text="Add Game"
             android:id="@+id/addGame"
             android:layout_row="1"
-            android:layout_column="0" />
+            android:layout_column="0"
+            android:hapticFeedbackEnabled="true"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -57,7 +59,8 @@
             android:text="Edit Images"
             android:id="@+id/editImages"
             android:layout_row="1"
-            android:layout_column="1" />
+            android:layout_column="1"
+            android:hapticFeedbackEnabled="true"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -65,7 +68,8 @@
             android:text="View Images"
             android:id="@+id/viewImage"
             android:layout_row="2"
-            android:layout_column="0" />
+            android:layout_column="0"
+            android:hapticFeedbackEnabled="true"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -73,23 +77,78 @@
             android:text="Edit Details"
             android:id="@+id/editDetails"
             android:layout_row="2"
-            android:layout_column="1" />
+            android:layout_column="1"
+            android:hapticFeedbackEnabled="true"/>
     </GridLayout>
+
 
     <WebView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/currentImage"
         android:background="@android:color/transparent"
-        android:layout_below="@+id/gridLayout"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:hapticFeedbackEnabled="true"/>
 
+
+
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tagBox"
+        android:padding="@dimen/activity_edit_padding"
+        android:ems="10"
+        android:background="@color/white"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:hint="Tag or Short description "
+        android:hapticFeedbackEnabled="true"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Next Image"
         android:id="@+id/nextImage"
+        android:layout_marginBottom="135dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="63dp" />
+        android:hapticFeedbackEnabled="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add tag"
+        android:id="@+id/tagButton"
+        android:layout_alignParentRight="true"
+        android:hapticFeedbackEnabled="true"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/tagBox"
+        android:layout_toEndOf="@+id/tagBox"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" X "
+        android:textSize="@android:dimen/app_icon_size"
+        android:textColor="@android:color/white"
+        android:background="@color/red"
+        android:id="@+id/close"
+        android:hapticFeedbackEnabled="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"/>
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@android:dimen/app_icon_size"
+        android:background="@drawable/googlesmall"
+        android:id="@+id/whereWasITaken"
+        android:text=" "
+        android:hapticFeedbackEnabled="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        />
 </RelativeLayout>

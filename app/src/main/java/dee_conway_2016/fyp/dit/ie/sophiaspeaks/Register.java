@@ -36,7 +36,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     public static final String LNAME = "last";
     public static final String EMAIL = "email";
     public static final String ACCESSCODE = "code";
-    public static final String LoginURL = "http://52.50.76.1/fyp/remotereg.php";
+    public static final String REG_URL = "http://52.50.76.1/sophia/remotereg.php";
+
+    public static final String SHARED = "globals";
 
     private String mUsername;
     private String mPassword;
@@ -44,6 +46,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     private String mLname;
     private String mEmailAddress;
     private String mAccessCode = "parent";
+    SharedPreferences shared;
 
     private EditText uNameView;
     private EditText passwordView;
@@ -62,6 +65,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        shared = getSharedPreferences(SHARED, 0);
+
         Intent intent = getIntent();
 
         String type = intent.getExtras().getString("type");
@@ -79,8 +84,16 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         lNameView = (EditText)findViewById(R.id.lNameBox);
         emailView= (EditText)findViewById(R.id.emailBox);
 
+        if(type.equalsIgnoreCase("child")){
+            
+            emailView.setVisibility(View.INVISIBLE);
+            lNameView.setVisibility(View.INVISIBLE);
+        }
+
         submitReg = (Button) findViewById(R.id.submitRegister);
+        submitReg.setText("Add "+mAccessCode);
         submitReg.setOnClickListener(this);
+
 
         error = (TextView) findViewById(R.id.errorView);
 
@@ -98,8 +111,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         mUsername = uNameView.getText().toString().trim();
         mPassword = passwordView.getText().toString().trim();
         mFname = fNameView.getText().toString().trim();
-        mLname =lNameView.getText().toString().trim();
-        mEmailAddress = emailView.getText().toString().trim();
+        mLname = shared.getString("lname","lastName");
+        mEmailAddress = shared.getString("email","emailAddress");
+
 
         boolean cancel = false;
         View focusView = null;
@@ -124,21 +138,26 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
             focusView = fNameView;
             cancel = true;
         }
-        if (TextUtils.isEmpty(mLname)){
-            lNameView.setError(getString(R.string.error_field_required));
-            focusView = lNameView;
-            cancel = true;
+        if(mAccessCode.equalsIgnoreCase("parent")){
+            mLname =lNameView.getText().toString().trim();
+            mEmailAddress = emailView.getText().toString().trim();
+            if (TextUtils.isEmpty(mLname)){
+                lNameView.setError(getString(R.string.error_field_required));
+                focusView = lNameView;
+                cancel = true;
+            }
+            if (TextUtils.isEmpty(mEmailAddress)){
+                emailView.setError(getString(R.string.error_field_required));
+                focusView = emailView;
+                cancel = true;
+            }
+            else if(!isEmailValid(mEmailAddress)) {
+                emailView.setError(getString(R.string.error_invalid_email));
+                focusView = emailView;
+                cancel = true;
+            }
         }
-        if (TextUtils.isEmpty(mEmailAddress)){
-            emailView.setError(getString(R.string.error_field_required));
-            focusView = emailView;
-            cancel = true;
-        }
-        else if(!isEmailValid(mEmailAddress)) {
-            emailView.setError(getString(R.string.error_invalid_email));
-            focusView = emailView;
-            cancel = true;
-        }
+
 
         //if email and password are entered
         if(!cancel){
@@ -162,7 +181,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         final String checkThisEmail = e;
         final String checkThisAccessCode = f;
 
-        StringRequest myQuery = new StringRequest(Request.Method.POST,LoginURL,new Response.Listener<String>(){
+        StringRequest myQuery = new StringRequest(Request.Method.POST,REG_URL,new Response.Listener<String>(){
             @Override
             public void onResponse(String comeBack){
                 String type = comeBack.trim();
@@ -191,9 +210,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                 map.put(USERNAME, checkThisUsername);
                 map.put(PASSWORD, checkThisPword);
                 map.put(FNAME, checkThisFname);
-                map.put(LNAME, checkThisLname);
+                map.put(LNAME, shared.getString("lname","default"));
                 map.put(EMAIL, checkThisEmail);
-                map.put(ACCESSCODE, checkThisAccessCode);
+                map.put(ACCESSCODE, mAccessCode);
                 return map;
             }
         };

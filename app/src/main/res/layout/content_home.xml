@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/cameraButton"
         android:text="Take Photo"
+        android:hapticFeedbackEnabled="true"
         android:layout_marginTop="63dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
@@ -27,6 +28,7 @@
         android:layout_height="wrap_content"
         android:text="Play Game"
         android:id="@+id/playGame"
+        android:hapticFeedbackEnabled="true"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
@@ -35,6 +37,7 @@
         android:layout_height="wrap_content"
         android:text="Go To Album"
         android:id="@+id/albumButton"
+        android:hapticFeedbackEnabled="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="58dp" />

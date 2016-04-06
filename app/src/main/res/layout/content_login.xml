@@ -19,51 +19,42 @@
     <EditText
         android:background="@color/white"
         android:padding="@dimen/activity_editbox"
+        android:hapticFeedbackEnabled="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="wrap_content"
         android:layout_marginTop="@dimen/activity_logscreen"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/loginEmail"
-        android:hint="Enter Email"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
-
-    <EditText
-        android:background="@color/white"
-        android:padding="@dimen/activity_editbox"
-        android:layout_marginTop="@dimen/activity_logscreen"
-        android:inputType="textEmailAddress"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:ems="10"
         android:id="@+id/editUserName"
-        android:layout_below="@+id/loginEmail"
-        android:layout_centerHorizontal="true"
         android:hint="Enter Username"
-        android:text="onethirty" />
-
-
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="onethirty"/>
 
     <EditText
         android:background="@color/white"
         android:padding="@dimen/activity_editbox"
         android:layout_marginTop="@dimen/activity_logscreen"
+        android:inputType="textEmailAddress"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/loginPassword"
-        android:hint="Enter Password"
         android:layout_below="@+id/editUserName"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:hint="Enter Password"
+        android:text="super4" />
+
+
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:hapticFeedbackEnabled="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="email / password do not match"
         android:id="@+id/loginError"
@@ -83,6 +74,7 @@
         android:text="Login"
         android:background="@color/white"
         android:id="@+id/submitLogin"
+        android:hapticFeedbackEnabled="true"
         android:layout_marginTop="44dp"
         android:layout_below="@+id/loginError"
         android:layout_centerHorizontal="true"
@@ -94,6 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Please register Here"
+        android:hapticFeedbackEnabled="true"
         android:id="@+id/register"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />

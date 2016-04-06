@@ -93,7 +93,8 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
 
         if (v == play) {
             //go to game activity
-
+            Intent intent = new Intent(this, MatchingGame.class);
+            startActivity(intent);
 
         }
         if (v == snap) {
