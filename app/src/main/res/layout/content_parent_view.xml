@@ -13,142 +13,105 @@
     tools:context="dee_conway_2016.fyp.dit.ie.sophiaspeaks.ParentView"
     tools:showIn="@layout/activity_parent_view">
 
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:padding="@dimen/activity_edit_padding"
-        android:verticalSpacing="0dp"
-        android:horizontalSpacing="0dp"
-        android:stretchMode="columnWidth"
-        android:numColumns="1"
-        android:id="@+id/gridLayout">
 
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Child"
-            android:id="@+id/addChild"
-            android:layout_row="0"
-            android:layout_column="0"
-            android:hapticFeedbackEnabled="true"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Support"
-            android:id="@+id/addSupport"
-            android:layout_row="0"
-            android:layout_column="1" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Game"
-            android:id="@+id/addGame"
-            android:layout_row="1"
-            android:layout_column="0"
-            android:hapticFeedbackEnabled="true"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Edit Images"
-            android:id="@+id/editImages"
-            android:layout_row="1"
-            android:layout_column="1"
-            android:hapticFeedbackEnabled="true"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="View Images"
-            android:id="@+id/viewImage"
-            android:layout_row="2"
-            android:layout_column="0"
-            android:hapticFeedbackEnabled="true"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Edit Details"
-            android:id="@+id/editDetails"
-            android:layout_row="2"
-            android:layout_column="1"
-            android:hapticFeedbackEnabled="true"/>
-    </GridLayout>
-
-
-    <WebView
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/currentImage"
-        android:background="@android:color/transparent"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        android:hapticFeedbackEnabled="true"/>
-
-
-
-
-
-    <EditText
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tagBox"
-        android:padding="@dimen/activity_edit_padding"
-        android:ems="10"
-        android:background="@color/white"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:hint="Tag or Short description "
-        android:hapticFeedbackEnabled="true"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next Image"
-        android:id="@+id/nextImage"
-        android:layout_marginBottom="135dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:hapticFeedbackEnabled="true"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add tag"
-        android:id="@+id/tagButton"
-        android:layout_alignParentRight="true"
-        android:hapticFeedbackEnabled="true"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/tagBox"
-        android:layout_toEndOf="@+id/tagBox"/>
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" X "
-        android:textSize="@android:dimen/app_icon_size"
-        android:textColor="@android:color/white"
-        android:background="@color/red"
-        android:id="@+id/close"
-        android:hapticFeedbackEnabled="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"/>
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@android:dimen/app_icon_size"
-        android:background="@drawable/googlesmall"
-        android:id="@+id/whereWasITaken"
-        android:text=" "
-        android:hapticFeedbackEnabled="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        />
+        android:layout_centerHorizontal="true"
+        android:weightSum="1"
+        android:id="@+id/linearLayout">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Games Page"
+            android:id="@+id/gamesHome"
+            android:layout_weight="0.33" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Image Page"
+            android:id="@+id/imagesHome"
+            android:layout_weight="0.33"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Sub User"
+            android:id="@+id/addUser"
+            android:layout_weight="0.33" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout"
+        android:layout_centerHorizontal="true"
+        android:weightSum="1"
+        android:id="@+id/linearLayout2">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/currentImage"
+            android:layout_weight=".6"/>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@android:dimen/app_icon_size"
+            android:background="@drawable/googlesmall"
+            android:id="@+id/whereWasITaken"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:text=" "
+            android:hapticFeedbackEnabled="true"/>
+
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" X "
+            android:textSize="@android:dimen/app_icon_size"
+            android:textColor="@android:color/white"
+            android:background="@color/red"
+            android:layout_alignParentRight="true"
+            android:hapticFeedbackEnabled="true"
+            android:layout_alignParentTop="true"
+            android:id="@+id/close"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:weightSum="1">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit This Image"
+                android:id="@+id/editImage"
+                android:layout_weight="0.50" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Get Most Recent Image"
+                android:id="@+id/nextImage"
+                android:layout_weight="0.50" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
 </RelativeLayout>

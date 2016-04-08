@@ -3,7 +3,10 @@ package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +21,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -34,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,15 +48,18 @@ import java.util.Map;
 @SuppressWarnings("deprcated")
 public class ParentView extends AppCompatActivity implements View.OnClickListener{
 
-    Button addChild, addSupport,addGame,editImages,viewImages, editMyDetails,showNext,closeView;
+    Button gamehome,imagehome,addUser,showNext,closeView,editCurrentImage,getNextImage;
     Button showLocation, addThistag;
-    WebView nxt;
+    ImageView nxt;
     EditText tagThis;
 
     TextToSpeech voice;
     public static String messageFromSophia = "Say this";
+    public static String imURL;
     public static String location;
     public static String imID;
+    public static String question;
+    public static String description;
     public static final String SHARED = "globals";
     SharedPreferences shared;
 
@@ -60,6 +68,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
     public static final String UPDATE_THIS_URL = "http://52.50.76.1/sophia/update.php?job=";
     public static final String IM_TAG = "&attach=";
     public static final String ID ="id=";
+
     public static final String DATA="data=";
 
 
@@ -77,40 +86,28 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
 
         shared = getSharedPreferences(SHARED, 0);
 
-        addChild = (Button)findViewById(R.id.addChild);
-        addSupport = (Button)findViewById(R.id.addSupport);
-        addGame = (Button)findViewById(R.id.addGame);
-        editImages = (Button)findViewById(R.id.editImages);
-        viewImages = (Button)findViewById(R.id.viewImage);
-        editMyDetails = (Button)findViewById(R.id.editDetails);
-        showNext = (Button) findViewById(R.id.nextImage);
+        gamehome = (Button)findViewById(R.id.gamesHome);
+        imagehome=(Button)findViewById(R.id.imagesHome);
+        addUser = (Button)findViewById(R.id.addUser);
         showLocation = (Button) findViewById(R.id.whereWasITaken);
         closeView = (Button)findViewById(R.id.close);
-        addThistag = (Button) findViewById(R.id.tagButton);
+        editCurrentImage = (Button)findViewById(R.id.editImage);
+        getNextImage = (Button) findViewById(R.id.nextImage);
 
-        tagThis = (EditText) findViewById(R.id.tagBox);
 
-
-        addChild.setOnClickListener(this);
-        addSupport.setOnClickListener(this);
-        addGame.setOnClickListener(this);
-        editImages.setOnClickListener(this);
-        viewImages.setOnClickListener(this);
-        editMyDetails.setOnClickListener(this);
-        showNext.setOnClickListener(this);
+        imagehome.setOnClickListener(this);
+        addUser.setOnClickListener(this);
+        gamehome.setOnClickListener(this);
         showLocation.setOnClickListener(this);
-        showLocation.setVisibility(View.INVISIBLE);
+        //showLocation.setVisibility(View.INVISIBLE);
         closeView.setOnClickListener(this);
-        closeView.setVisibility(View.INVISIBLE);
-        tagThis.setOnClickListener(this);
-        tagThis.setVisibility(View.INVISIBLE);
-        addThistag.setOnClickListener(this);
-        addThistag.setVisibility(View.INVISIBLE);
+        //closeView.setVisibility(View.INVISIBLE);
+        getNextImage.setOnClickListener(this);
+        editCurrentImage.setOnClickListener(this);
 
-        nxt = (WebView)findViewById(R.id.currentImage);
-        nxt.setVisibility(View.INVISIBLE);
-        nxt.getSettings().setLoadWithOverviewMode(true);
-        nxt.getSettings().setUseWideViewPort(true);
+
+        nxt = (ImageView)findViewById(R.id.currentImage);
+
 
         voice=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -120,8 +117,14 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
                 }
             }
         });
+        getNextImageAndDisplay();
 
 
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        getNextImageAndDisplay();
     }
 
     //Inflate the menu bar with icon
@@ -155,63 +158,46 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        if (v==addChild){
-            Intent intent = new Intent(this, Register.class);
-            intent.putExtra("type", "child");
-            startActivity(intent);
-
-        }
-
-        if (v==addSupport){
-            Intent intent = new Intent(this, Register.class);
-            intent.putExtra("type","support");
-            startActivity(intent);
-        }
-
-        if (v==addGame){
+        if (v==gamehome){
             voice.speak("child", TextToSpeech.QUEUE_FLUSH, null);
             Intent intent = new Intent(this,AddGame.class);
             startActivity(intent);
 
         }
-        if (v==editImages){
-            Intent intent = new Intent(this, Register.class);
+        else if (v==imagehome){
+            Intent intent = new Intent(this, RecordActivity.class);
 
             startActivity(intent);
 
         }
-        if (v==editMyDetails){
+        else if (v==addUser){
             Intent intent = new Intent(this, Register.class);
-            intent.putExtra("message","sub");
+            intent.putExtra("type", "child");
             startActivity(intent);
 
         }
-        if (v==viewImages){
-            Intent intent = new Intent(this, Register.class);
-            intent.putExtra("message","sub");
-            startActivity(intent);
-
-        }
-        if (v==showNext){
-            //get list of images that have not been viewed yet order by upload time
-            changeButtonViewVisible();
-            getNextimage(shared.getString("email","default"));
-
-
-        }
-        if (v == showLocation){
+        else if (v == showLocation){
             // Creates an Intent that will load a map of San Francisco
             Uri gmmIntentUri = Uri.parse(location);
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
         }
-        if(v==closeView){
+        else if(v==closeView){
             changeButtonViewInvisible();
         }
-        if(v==addThistag){
+        else if (v==editCurrentImage){
+            Intent intent = new Intent(this, ImageEditActivity.class);
+            intent.putExtra("image",imURL);
+            intent.putExtra("id",imID);
+            intent.putExtra("question",question);
+            intent.putExtra("description",description);
+            startActivity(intent);
 
-            checkInput();
+        }
+        else if (v==getNextImage){
+            //get list of images that have not been viewed yet order by upload time
+            getNextImageAndDisplay();
         }
     }
 
@@ -220,6 +206,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
         final ProgressDialog waiting = ProgressDialog.show(this,"Searching...",
                 "Getting Next Image..", false, false);
         String finalURL= SHOW_THIS_URL+email;
+        //Toast.makeText(ParentView.this,finalURL,Toast.LENGTH_LONG).show();
         JsonArrayRequest jsonQuery = new JsonArrayRequest(JsonArrayRequest.Method.GET, finalURL,null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -233,7 +220,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         waiting.dismiss();
-                        Toast.makeText(ParentView.this,error.toString(),Toast.LENGTH_LONG).show();
+                        //Toast.makeText(ParentView.this,error.toString(),Toast.LENGTH_LONG).show();
                     }
                 }
         ) {
@@ -249,10 +236,14 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
         try{
             JSONObject obj = null;
             obj = photosFromServer.getJSONObject(0);
-            nxt.loadUrl(obj.getString("photo"));
+
             imID=obj.getString("id");
+            imURL = obj.getString("photo");
+            new DownloadImageTask(nxt).execute(imURL);
             messageFromSophia= obj.getString("tag");
             location = obj.getString("locate");
+            description= obj.getString("wordSound");
+            question = obj.getString("question");
             uploadCommand(VIEWED.concat(ID).concat(imID));
 
         }catch(JSONException e){
@@ -267,39 +258,35 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
         closeView.setVisibility(View.INVISIBLE);
         showLocation.setVisibility(View.INVISIBLE);
         nxt.setVisibility(View.INVISIBLE);
-        tagThis.setVisibility(View.INVISIBLE);
-        addThistag.setVisibility(View.INVISIBLE);
     }
     public void changeButtonViewVisible(){
         closeView.setVisibility(View.VISIBLE);
         showLocation.setVisibility(View.VISIBLE);
         nxt.setVisibility(View.VISIBLE);
-        tagThis.setVisibility(View.VISIBLE);
-        addThistag.setVisibility(View.VISIBLE);
     }
 
     private void uploadCommand(String a){
         Log.d("myTag", "Trying To Update");
         final String THIS_JOB = UPDATE_THIS_URL.concat(a);
 
-        Toast.makeText(ParentView.this,THIS_JOB+":  RETURN",Toast.LENGTH_LONG).show();
+        //Toast.makeText(ParentView.this,THIS_JOB+":  UPDATING THE DATABASE",Toast.LENGTH_LONG).show();
         StringRequest myQuery = new StringRequest(Request.Method.GET,THIS_JOB,new Response.Listener<String>(){
             @Override
             public void onResponse(String comeBack){
                 String type = comeBack.trim();
                 if(type.equalsIgnoreCase("updated")){
                     Log.d("myTag", "updated");
-                    Toast.makeText(ParentView.this,type+"RETURN",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(ParentView.this,type+"WAS UPDATED",Toast.LENGTH_LONG).show();
                 }else{
                     Log.d("myTag", "notUpdated");
-                    Toast.makeText(ParentView.this,type+"WRONG",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(ParentView.this,type+"WAS NOT UPDATED",Toast.LENGTH_LONG).show();
                 }
             }
         },
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(ParentView.this,"ERROR",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(ParentView.this,"SOME KIND OF ERROR",Toast.LENGTH_LONG).show();
                     }
                 }
         );
@@ -332,5 +319,35 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
 
         }
 
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
+
+    public void getNextImageAndDisplay(){
+        changeButtonViewVisible();
+        getNextimage(shared.getString("email", "default"));
     }
 }

@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //for testing
 
-        userNameView.setText("onethirty");
+        userNameView.setText("onethir");
         passwordLoginView.setText("super");
 
 

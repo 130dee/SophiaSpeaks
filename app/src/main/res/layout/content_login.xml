@@ -30,7 +30,7 @@
         android:hint="Enter Username"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="onethirty"/>
+        android:text=""/>
 
     <EditText
         android:background="@color/white"

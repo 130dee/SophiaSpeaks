@@ -105,6 +105,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutfileUri);
         startActivityForResult(intent, TAKE_PIC);
 
+
         buildGoogleApiClient();
     }
 
@@ -264,6 +265,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         ){
             protected Map<String,String>getParams() throws AuthFailureError{
                 String image = convertBmap(bmap);
+
 
                 Map<String,String> params = new Hashtable<String, String>();
 

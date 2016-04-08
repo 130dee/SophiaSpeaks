@@ -3,11 +3,12 @@
     package="dee_conway_2016.fyp.dit.ie.sophiaspeaks">
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="15"
         android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <!-- Internet Permissions -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -113,9 +114,19 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".RecordActivity"
+            android:label="@string/title_activity_record"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".MatchingGame"
             android:label="@string/title_activity_matching_game"
             android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ImageEditActivity"
+            android:label="@string/title_activity_image_edit"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
