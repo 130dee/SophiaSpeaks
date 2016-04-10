@@ -16,6 +16,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,6 +43,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
@@ -53,20 +55,25 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     public static final String IM_TAG = "tag";
     public static final String EMAIL = "email";
     public static final String TIMESTAMP = "tdate";
+    public static final String ISTHEME = "theme";
+
 
     public static final String LOCATION = "location";
     public static final String DB_URL = "http://52.50.76.1/sophia/imageupload.php";
+    public static final String GET_THEME_URL = "http://52.50.76.1/sophia/gettheme.php?email=";
     protected GoogleApiClient mGoogleApiClient;
     protected Location mLastLocation;
+    private SharedPreferences shared;
 
     public static final String SHARED = "globals";
-    TextToSpeech voice;
-    ImageButton happy, sad, question, cancel;
-    ImageView photoView;
-    Bitmap bmap;
+    private TextToSpeech voice;
+    private ImageButton happy, sad, question, cancel,yes,no;
+    private ImageView photoView;
+    private Bitmap bmap;
     static int TAKE_PIC =1;
-    Uri outPutfileUri;
-    double x,y;
+    private Uri outPutfileUri;
+    private double x,y;
+    private String todaysTheme;
 
 
 
@@ -77,6 +84,9 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        shared = getSharedPreferences(SHARED, 0);
+        volleyGetTheme(shared.getString("email", "email"));
 
         voice = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -90,6 +100,8 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         question =(ImageButton) findViewById(R.id.what);
         happy = (ImageButton) findViewById(R.id.happy);
         sad = (ImageButton) findViewById(R.id.sad);
+        yes = (ImageButton) findViewById(R.id.yesBtn);
+        no = (ImageButton) findViewById(R.id.noBtn);
         cancel=  (ImageButton) findViewById(R.id.cancel);
         photoView = (ImageView)findViewById(R.id.showThisImage);
 
@@ -97,6 +109,8 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         happy.setOnClickListener(this);
         sad.setOnClickListener(this);
         cancel.setOnClickListener(this);
+        yes.setOnClickListener(this);
+        no.setOnClickListener(this);
 
         Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory(),
@@ -185,15 +199,17 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     {
         if (requestCode == TAKE_PIC && resultCode==RESULT_OK){
             bmap = BitmapFactory.decodeFile(outPutfileUri.getPath());
+            setUpScreenQuestion();
             photoView.setImageBitmap(bmap);
             Toast.makeText(this, outPutfileUri.toString(), Toast.LENGTH_LONG).show();
-        }
+        }else{finish();}
     }
 
     @Override
     public void onClick(View v) {
         String toSpeak = "";
         Boolean upload = false;
+        String themeType = "no";
         if (v == cancel) {
 
             toSpeak = "Not sending this photo to mommy";
@@ -210,18 +226,28 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
             toSpeak = "I really love this photo";
             upload = true;
         }
-        SharedPreferences shared = getSharedPreferences(SHARED, 0);
+        if(v==yes){
+            toSpeak = "This is a photo of todays theme  "+todaysTheme;
+            upload = true;
+            themeType = "yes";
+        }
+        if(v==no){
+            setupScreenFeelings();
+
+        }
+
         String tagOn = shared.getString("email", "");
         String xyCo_ords = "geo:0,0?q="+x+","+y+"loc";
         String time_date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         Toast.makeText(TakePhoto.this, time_date+": "+xyCo_ords, Toast.LENGTH_LONG).show();
         voice.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
-        if(upload == true){
-            uploadThis(toSpeak ,tagOn, xyCo_ords, time_date);
+        if(upload) {
+            uploadThis(themeType, toSpeak,tagOn, xyCo_ords, time_date);
         }
 
 
     }
+
     public String convertBmap(Bitmap imageBitmap){
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, out);
@@ -231,7 +257,8 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     }
 
 
-    public void uploadThis(String tag , String mailtag, String xy, String td){
+    public void uploadThis(String yesNo, String tag , String mailtag, String xy, String td){
+        final String themeYesNo = yesNo;
         final String tdate = td;
         final String myLoc = xy;
         final String addMyMail = mailtag;
@@ -268,7 +295,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
 
 
                 Map<String,String> params = new Hashtable<String, String>();
-
+                params.put(ISTHEME,themeYesNo);
                 params.put(IMAGE, image);
                 params.put(IM_TAG, maidenTag);
                 params.put(EMAIL, addMyMail);
@@ -302,6 +329,56 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    public void setUpScreenQuestion(){
+        question.setVisibility(View.INVISIBLE);
+        happy.setVisibility(View.INVISIBLE);
+        sad.setVisibility(View.INVISIBLE);
+        cancel.setVisibility(View.INVISIBLE);
+        yes.setVisibility(View.VISIBLE);
+        no.setVisibility(View.VISIBLE);
+        voice.speak("Is this a photograph of "+ todaysTheme, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+    public void setupScreenFeelings(){
+        yes.setVisibility(View.INVISIBLE);
+        no.setVisibility(View.INVISIBLE);
+        question.setVisibility(View.VISIBLE);
+        happy.setVisibility(View.VISIBLE);
+        sad.setVisibility(View.VISIBLE);
+        cancel.setVisibility(View.VISIBLE);
+
+        voice.speak("Is this a photograph of "+ todaysTheme, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+    public void volleyGetTheme(String checkForAtheme){
+        final ProgressDialog waiting = ProgressDialog.show(this,"Editing image details...",
+                "Uploading changes..", false, false);
+        StringRequest myQuery = new StringRequest(Request.Method.GET,GET_THEME_URL+checkForAtheme,new Response.Listener<String>(){
+            @Override
+            public void onResponse(String comeBack){
+                String type = comeBack.trim();
+                if(type.equalsIgnoreCase("NoTheme")){
+                    waiting.dismiss();
+                    Log.d("myTag", "found");;
+
+                }else{
+                    waiting.dismiss();
+                    todaysTheme = type;
+                }
+            }
+        },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        waiting.dismiss();
+                    }
+                }
+        );
+        RequestQueue rQue = Volley.newRequestQueue(this);
+        rQue.add(myQuery);
 
     }
 }

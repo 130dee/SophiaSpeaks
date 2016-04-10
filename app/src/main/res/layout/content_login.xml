@@ -65,6 +65,15 @@
         android:textColor="#fb2828"
         android:typeface="sans"
         android:visibility="gone" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/supportWorker"
+        android:padding="@dimen/activity_editbox"
+        android:background="@color/white"
+        android:hint="Enter support code here"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 
 
@@ -75,10 +84,10 @@
         android:background="@color/white"
         android:id="@+id/submitLogin"
         android:hapticFeedbackEnabled="true"
-        android:layout_marginTop="44dp"
-        android:layout_below="@+id/loginError"
-        android:layout_centerHorizontal="true"
-        android:ellipsize="middle" />
+        android:layout_marginTop="88dp"
+        android:ellipsize="middle"
+        android:layout_below="@+id/supportWorker"
+        android:layout_centerHorizontal="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -90,6 +99,8 @@
         android:id="@+id/register"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+
 
 
 </RelativeLayout>

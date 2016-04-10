@@ -79,10 +79,10 @@
         android:layout_height="wrap_content"
         android:text="Register"
         android:id="@+id/submitRegister"
-        android:layout_marginTop="71dp"
         android:hapticFeedbackEnabled="true"
         android:layout_below="@+id/emailBox"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignLeft="@+id/errorView"
+        android:layout_alignStart="@+id/errorView" />
 
 
 
@@ -94,5 +94,26 @@
         android:id="@+id/errorView"
         android:layout_alignParentBottom="true"
         android:hapticFeedbackEnabled="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_edit_padding"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:background="@color/white"
+        android:id="@+id/codeBox"
+        android:layout_below="@+id/submitRegister"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="56dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Give this login code to support workers"
+        android:background="@color/white"
+        android:id="@+id/codeInstructions"
+        android:layout_below="@+id/codeBox"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

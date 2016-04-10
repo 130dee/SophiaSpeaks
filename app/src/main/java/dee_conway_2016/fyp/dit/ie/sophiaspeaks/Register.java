@@ -54,7 +54,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     private EditText lNameView;
     private EditText emailView;
 
-    private TextView error;
+    private TextView error,codeText,codeInstructions;
 
     Button submitReg;
 
@@ -83,11 +83,16 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         fNameView = (EditText)findViewById(R.id.fNameBox);
         lNameView = (EditText)findViewById(R.id.lNameBox);
         emailView= (EditText)findViewById(R.id.emailBox);
+        codeText = (TextView)findViewById(R.id.codeBox);
+        codeInstructions = (TextView)findViewById(R.id.codeInstructions);
 
         if(type.equalsIgnoreCase("child")){
             
             emailView.setVisibility(View.INVISIBLE);
             lNameView.setVisibility(View.INVISIBLE);
+            codeText.setVisibility(View.VISIBLE);
+            codeText.setText(shared.getString("access_code", "Code"));
+            codeInstructions.setVisibility(View.VISIBLE);
         }
 
         submitReg = (Button) findViewById(R.id.submitRegister);

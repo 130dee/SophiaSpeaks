@@ -1,5 +1,6 @@
 package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,7 +43,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddGame extends AppCompatActivity implements View.OnClickListener{
+public class AddGame extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener{
 
     public static final String GAMENAME = "game";
     public static final String EMAIL = "email";
@@ -57,15 +59,29 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener{
     TextView currentGame;
     ListView theme;
     ListAdapter adapter;
-    RadioButton radio;
+
+
     ArrayList<Games> listOfThemes = new ArrayList<Games>();
-    GamesAdapter myGameListAdapter = null;
+    //GamesAdapter myGameListAdapter = null;
 
     static ArrayList<String> gameRow;
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        int pos = position;
+        String themeItem = (String) theme.getItemAtPosition(pos);
+        AlertDialog.Builder adb = new AlertDialog.Builder(
+                AddGame.this);
+        adb.setTitle("Theme: "+parent.getItemAtPosition(pos)+" / n");
+                adb.setMessage("Correct/incorrect");
+        adb.setPositiveButton("Ok", null);
+        adb.show();
+    }
+
+
     class Games{
         public String id;
-        public String theme;
+        public String gametheme;
         public String correct;
         public String incorrect;
         public String datetime;
@@ -88,16 +104,23 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener{
         String email = shared.getString("email","email");
         getJsonArrayOfGames(email);
 
-       // viewPreviousGame = (Button) findViewById(R.id.);
+        //String [] thisStuff= new String[]{"stuff","more Stuff", "Even Mpore Stuff"};
+
         addNewGame       = (Button) findViewById(R.id.addNewGameButton);
         addNewGame.setOnClickListener(this);
         endNow           = (Button) findViewById(R.id.endCurrentGameButton);
-        //addNewTag        = (Button) findViewById(R.id.);
-        //correctGame      = (Button) findViewById(R.id.);
-        //wrongGame        = (Button) findViewById(R.id.);*/
         gameTag          = (EditText) findViewById(R.id.addGameEditText);
-        currentGame      = (TextView) findViewById(R.id.curentGametxtView);
-        theme = (ListView)findViewById(R.id.listOfThemes);
+        theme            = (ListView)findViewById(R.id.listOfThemes);
+
+        String [] thisStuff= new String[]{"stuff","more Stuff", "Even Mpore Stuff","Stuff to check scrolling","some more","seems like scrooling is not working, I don't know why","last Item on the list"};
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, android.R.id.text1, thisStuff);
+
+        theme.setAdapter(myAdapter);
+
+        theme.setOnItemClickListener(this);
+
+
+
 
 
 
@@ -179,16 +202,16 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener{
         StringRequest myQuery = new StringRequest(Request.Method.POST,REG_URL,new Response.Listener<String>(){
             @Override
             public void onResponse(String comeBack){
-                    Log.d("myTag", comeBack);
-                    if(comeBack.trim().equalsIgnoreCase("success")){
-                        Toast.makeText(AddGame.this, comeBack, Toast.LENGTH_LONG).show();
-                        gameTag.setText(null);
-                        waiting.dismiss();
-                    }else{
-                        Toast.makeText(AddGame.this, comeBack, Toast.LENGTH_LONG).show();
-                        gameTag.setText(null);
-                        waiting.dismiss();
-                    }
+                Log.d("myTag", comeBack);
+                if(comeBack.trim().equalsIgnoreCase("success")){
+                    Toast.makeText(AddGame.this, comeBack, Toast.LENGTH_LONG).show();
+                    gameTag.setText(null);
+                    waiting.dismiss();
+                }else{
+                    Toast.makeText(AddGame.this, comeBack, Toast.LENGTH_LONG).show();
+                    gameTag.setText(null);
+                    waiting.dismiss();
+                }
             }
         },
                 new Response.ErrorListener(){
@@ -225,8 +248,8 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener{
                     public void onResponse(JSONArray response) {
                         waiting.dismiss();
 
-                            Toast.makeText(AddGame.this, response.length()+"",Toast.LENGTH_LONG).show();
-                            displayGameList(response);
+                        Toast.makeText(AddGame.this, response.length()+"",Toast.LENGTH_LONG).show();
+                        displayGameList(response);
 
 
                     }
@@ -254,7 +277,7 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener{
                 obj = listOfGamesToBeParsed.getJSONObject(i);
                 Games gameRow = new Games();
                 gameRow.id = obj.getString("id");
-                gameRow.theme = obj.getString("name");
+                gameRow.gametheme = obj.getString("name");
                 gameRow.correct = obj.getString("correct");
                 gameRow.incorrect = obj.getString("incorrect");
                 gameRow.datetime = obj.getString("datetime");
@@ -268,52 +291,9 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener{
         }catch(JSONException e){
             e.printStackTrace();
         }
-        populateListView();
-    }
-    public void populateListView(){
-        myGameListAdapter = new GamesAdapter();
-        theme.setAdapter(myGameListAdapter);
+        //populateListView();
     }
 
-    class GamesAdapter extends ArrayAdapter<Games>{
-        GamesAdapter() {
-            super(AddGame.this, android.R.layout.simple_list_item_1);
-        }
-
-        public View getView(int pos, View convertView,ViewGroup parent){
-            ViewHolder holder;
-
-            if(convertView==null) {
-                LayoutInflater inflater = getLayoutInflater();
-                convertView = inflater.inflate(R.layout.game_row, null);
-
-                holder = new ViewHolder(convertView);
-
-                convertView.setTag(holder);
-            }else{
-                holder = (ViewHolder)convertView.getTag();
-
-            }
-            holder.populateFrom(listOfThemes.get(pos));
-            return (convertView);
-        }
-    }
-
-    class ViewHolder {
-        public TextView themeView = null;
-        public TextView dateView = null;
-
-        ViewHolder(View row){
-            themeView=(TextView)row.findViewById(R.id.themetext);
-            dateView = (TextView)row.findViewById(R.id.datetext);
-            radio = (RadioButton)row.findViewById(R.id.radioButton);
-        }
-        void populateFrom(Games g){
-            themeView.setText(g.theme);
-            dateView.setText(g.datestring);
-        }
-    }
 }
-
 
 

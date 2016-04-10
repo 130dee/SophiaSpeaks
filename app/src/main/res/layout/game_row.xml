@@ -27,20 +27,10 @@
         android:text="DATE"
         android:id="@+id/datetext"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/radioButton"
-        android:layout_toStartOf="@+id/radioButton"
-        android:layout_centerVertical="true"/>
-
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/activity_edit_padding"
-        android:id="@+id/radioButton"
-        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:hapticFeedbackEnabled="true"
-        android:checked="false" />
+        android:layout_alignParentEnd="true" />
+
+
 
 
 </RelativeLayout>

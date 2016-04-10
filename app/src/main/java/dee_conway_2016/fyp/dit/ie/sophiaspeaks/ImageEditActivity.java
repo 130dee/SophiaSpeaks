@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -32,6 +33,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 
@@ -44,14 +46,15 @@ import java.util.Map;
 public class ImageEditActivity extends AppCompatActivity implements View.OnClickListener{
 
     ImageView backgroundImageDispplay;
-    EditText addQuestion, addDescription;
-    Button getVoice1,getVoice2,saveImage,deleteImage;
+    EditText addQuestionText, addDescriptionText;
+    Button questionAddBtn,descriptionAddBtn,getDescriptionVoiceBtn,getQuestionVoiceBtn,saveQuestionBtn,saveDescriptionBtn,deleteImageBtn;
     TextToSpeech voice;
+    RelativeLayout editdescription,editquestion;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     public static final String IMAGE_EDIT_URL = "http://52.50.76.1/sophia/imageedit.php";
     Intent intent;
     boolean first = true;
-    String save,delete,imageid,question,description;
+    String saveQ,saveD,delete,imageid,question,description;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -64,7 +67,8 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_image_edit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        save = "save";
+        saveQ = "saveQ";
+        saveD = "saveD";
         delete = "delete";
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -92,80 +96,77 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         }
 
         backgroundImageDispplay = (ImageView)findViewById(R.id.backgroundImage);
-        addQuestion= (EditText)findViewById(R.id.editText);
-        addDescription= (EditText)findViewById(R.id.editText2);
-        getVoice1 = (Button)findViewById(R.id.vBtn1);
-        getVoice2 = (Button)findViewById(R.id.vBtn2);
-        saveImage = (Button)findViewById(R.id.saveMe);
-        deleteImage = (Button)findViewById(R.id.deleteMe);
 
-        getVoice1.setOnClickListener(this);
-        getVoice2.setOnClickListener(this);
-        saveImage.setOnClickListener(this);
-        deleteImage.setOnClickListener(this);
+        editquestion = (RelativeLayout) findViewById(R.id.questionLayout);
+        descriptionAddBtn = (Button)findViewById(R.id.addDescription);
+        descriptionAddBtn.setOnClickListener(this);
+        addDescriptionText= (EditText)findViewById(R.id.descriptionEdit);
+        getDescriptionVoiceBtn = (Button)findViewById(R.id.vBtn1);
+        getDescriptionVoiceBtn.setOnClickListener(this);
+        saveDescriptionBtn = (Button)findViewById(R.id.save1);
+        saveDescriptionBtn.setOnClickListener(this);
+
+        editdescription = (RelativeLayout) findViewById(R.id.descriptionLayout);
+        questionAddBtn = (Button)findViewById(R.id.addquestion);
+        questionAddBtn.setOnClickListener(this);
+        addQuestionText= (EditText)findViewById(R.id.questionEdit);
+        getQuestionVoiceBtn = (Button)findViewById(R.id.vBtn2);
+        getQuestionVoiceBtn.setOnClickListener(this);
+        saveQuestionBtn = (Button)findViewById(R.id.save2);
+        saveQuestionBtn.setOnClickListener(this);
 
 
 
-            addQuestion.setText(question);
+        deleteImageBtn = (Button)findViewById(R.id.deleteThis);
+        deleteImageBtn.setOnClickListener(this);
+
+        editdescription.setVisibility(View.INVISIBLE);
+        editquestion.setVisibility(View.INVISIBLE);
 
 
-            addDescription.setText(question);
-
-
-        new DownloadImageTask(backgroundImageDispplay).execute(image);
+        Picasso.with(this).load(image).into(backgroundImageDispplay);
 
 
     }
 
     @Override
     public void onClick(View v) {
-        if(v==getVoice1){
-            first = true;
+        if(v==descriptionAddBtn){
+            editquestion.setVisibility(View.INVISIBLE);
+            editdescription.setVisibility(View.VISIBLE);
+            first=true;
+            addQuestionText.setText("");
+            addDescriptionText.setText("");
 
+        }
+        if(v==questionAddBtn){
+            editdescription.setVisibility(View.INVISIBLE);
+            editquestion.setVisibility(View.VISIBLE);
+            addQuestionText.setText("");
+            addDescriptionText.setText("");
+            first=false;
+        }
+        if(v==getDescriptionVoiceBtn){
             promptSpeechInput();
         }
-        if(v==getVoice2){
-            first = false;
-            addDescription.setText(getAvoiceInput());
+        if(v==getQuestionVoiceBtn){
             promptSpeechInput();
         }
-        if(v==saveImage){
-            volleyPut(save);
+        if(v==saveQuestionBtn){
+            question = addQuestionText.getText().toString();
+            volleyPut(saveQ);
         }
-        if(v==deleteImage){
+        if(v==saveDescriptionBtn){
+            description = addDescriptionText.getText().toString();
+            volleyPut(saveD);
+
+        }
+        if(v==deleteImageBtn){
             volleyPut(delete);
         }
 
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
-    }
-
-    public String getAvoiceInput(){
-        return "SET THIS TEXT";
-    }
 
     private void promptSpeechInput() {
         try {
@@ -197,9 +198,9 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
                 if (resultCode == RESULT_OK && null != data) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     if(first){
-                        addQuestion.setText(result.get(0).toString());
+                        addDescriptionText.setText(result.get(0).trim().toString());
                     }else{
-                        addDescription.setText(result.get(0).toString());
+                        addQuestionText.setText(result.get(0).trim().toString());
                     }
 
                 } else if (null == data) {
@@ -259,10 +260,14 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onResponse(String comeBack){
                 String type = comeBack.trim();
+                editquestion.setVisibility(View.INVISIBLE);
+                editdescription.setVisibility(View.INVISIBLE);
                 if(type.equalsIgnoreCase("successful")){
                     waiting.dismiss();
                     Log.d("myTag", "found");
                     Toast.makeText(ImageEditActivity.this,comeBack,Toast.LENGTH_LONG).show();
+                    editquestion.setVisibility(View.INVISIBLE);
+                    editdescription.setVisibility(View.INVISIBLE);
 
                 }else{
                     waiting.dismiss();
@@ -284,9 +289,11 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("id", imageid);
                 map.put("job",thisJob);
-                if(thisJob.equalsIgnoreCase("save")){
-                    map.put("question",addQuestion.getText().toString());
-                    map.put("description",addDescription.getText().toString());
+                if(thisJob.equalsIgnoreCase("saveQ")) {
+                    map.put("question", question);
+                }
+                if(thisJob.equalsIgnoreCase("saveD")) {
+                    map.put("description",description);
                 }
 
 

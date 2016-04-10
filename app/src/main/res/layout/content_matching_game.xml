@@ -1,36 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:background="@color/pink"
+    android:id="@+id/relativeGameView"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/pink"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="dee_conway_2016.fyp.dit.ie.sophiaspeaks.MatchingGame"
-    tools:showIn="@layout/activity_matching_game"
-    android:weightSum="1">
+    tools:showIn="@layout/activity_matching_game">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:background="@color/pink"
+        android:id="@+id/gameBackground"
+        android:weightSum="1">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/webView"
+            android:layout_weight="0.33"
+            android:hapticFeedbackEnabled="true"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/webView2"
+            android:layout_weight="0.33"
+            android:hapticFeedbackEnabled="true"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/webView3"
+            android:hapticFeedbackEnabled="true"
+            android:layout_weight="0.33" />
+    </LinearLayout>
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/webView"
-        android:layout_weight="0.33"
-        android:hapticFeedbackEnabled="true"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/answerView"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
-    <ImageView
+    <Button
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/webView2"
-        android:layout_weight="0.33"
-        android:hapticFeedbackEnabled="true"/>
+        android:layout_height="wrap_content"
+        android:text="Next Game"
+        android:id="@+id/nextGameBtn"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/webView3"
-        android:hapticFeedbackEnabled="true"
-        android:layout_weight="0.33" />
-</LinearLayout>
+
+</RelativeLayout>
