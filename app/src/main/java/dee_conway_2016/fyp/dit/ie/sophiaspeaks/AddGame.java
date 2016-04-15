@@ -2,27 +2,19 @@ package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -51,23 +43,24 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
     public static final String DATE = "datestring";
     public static final String SHARED = "globals";
     SharedPreferences shared;
-    public static final String REG_URL = "http://52.50.76.1/sophia/makegame.php";
-    public static final String GAMES_URL = "http://52.50.76.1/sophia/getgames.php?email=";
+    public static final String REG_URL = "http://52.50.76.1/sophiaFYP/makegame.php";
+    public static final String GAMES_URL = "http://52.50.76.1/sophiaFYP/getgames.php?email=";
 
-    Button addNewGame,correctGame,wrongGame,addNewTag,viewPreviousGame,startNow,endNow;
+    public Button addNewTheme,viewPreviousGame;
     EditText gameTag;
-    TextView currentGame;
     ListView theme;
     ListAdapter adapter;
 
 
-    ArrayList<Games> listOfThemes = new ArrayList<Games>();
+    ArrayList<Themes> listOfThemes = new ArrayList<Themes>();
     //GamesAdapter myGameListAdapter = null;
 
     static ArrayList<String> gameRow;
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        //Alert Box to show results from previous theme games
         int pos = position;
         String themeItem = (String) theme.getItemAtPosition(pos);
         AlertDialog.Builder adb = new AlertDialog.Builder(
@@ -79,7 +72,7 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
     }
 
 
-    class Games{
+    class Themes{
         public String id;
         public String gametheme;
         public String correct;
@@ -104,60 +97,30 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
         String email = shared.getString("email","email");
         getJsonArrayOfGames(email);
 
-        //String [] thisStuff= new String[]{"stuff","more Stuff", "Even Mpore Stuff"};
-
-        addNewGame       = (Button) findViewById(R.id.addNewGameButton);
-        addNewGame.setOnClickListener(this);
-        endNow           = (Button) findViewById(R.id.endCurrentGameButton);
+        addNewTheme       = (Button) findViewById(R.id.addNewGameButton);
+        addNewTheme.setOnClickListener(this);
         gameTag          = (EditText) findViewById(R.id.addGameEditText);
         theme            = (ListView)findViewById(R.id.listOfThemes);
 
-        String [] thisStuff= new String[]{"stuff","more Stuff", "Even Mpore Stuff","Stuff to check scrolling","some more","seems like scrooling is not working, I don't know why","last Item on the list"};
+        //An Array of strings to act as a place holder for the array of themes
+        String [] thisStuff= new String[]{"stuff","more Stuff", "Even Mpore Stuff","Stuff to check scrolling","some more","seems like scrooling is not working, I don't know why","last Item on the list"};//Arrayadapter to parse out the string array in to a list of clickable items
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, android.R.id.text1, thisStuff);
 
+        //set the adapter on the listview tpo create a list of themes
         theme.setAdapter(myAdapter);
-
+        // place a listener on the list to act when clicked
         theme.setOnItemClickListener(this);
-
-
-
-
-
 
     }
 
+    //A listener that listens for clicks on any button
     @Override
     public void onClick(View v) {
 
-        if(v==addNewGame){
-            //add a new game
+        if(v==addNewTheme){
+            //add a new theme to database and start theme game
             //clear the txt box
-
             createGame();
-
-        }
-        if(v==startNow){
-            //start
-            //edit Now Playing Box
-        }
-        if(v==endNow){
-            //end on server
-            //edit currentBox
-            currentGame.setText(null);
-        }
-        if(v==addNewTag){
-
-        }
-        if(v==correctGame){
-
-        }
-        if(v==wrongGame){
-
-        }
-        if(v==viewPreviousGame){
-
-        }
-        if(v==wrongGame){
 
         }
     }
@@ -187,7 +150,7 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
     }
 
     public void addThisNewGame(String addthisStringToTheGameList){
-        Log.d("myTag", "Trying To login");
+        Log.d("myTag", getString(R.string.trying_to_login));
         final ProgressDialog waiting = ProgressDialog.show(this, "Creating Game...",
                 "Authenticating User details..", false, false);
         Long systime = System.currentTimeMillis();
@@ -223,7 +186,7 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
         ){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<String, String>();
+                Map<String, String> map = new HashMap<>();
                 map.put(GAMENAME, addThis);
                 map.put(EMAIL, checkThisEmail);
                 map.put(TIME, dateString);
@@ -250,10 +213,7 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
 
                         Toast.makeText(AddGame.this, response.length()+"",Toast.LENGTH_LONG).show();
                         displayGameList(response);
-
-
                     }
-
                 },
                 new Response.ErrorListener() {
                     @Override
@@ -273,18 +233,18 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
 
         try{
             for(int i=0;i<listOfGamesToBeParsed.length();i++) {
-                JSONObject obj = null;
+                JSONObject obj;
                 obj = listOfGamesToBeParsed.getJSONObject(i);
-                Games gameRow = new Games();
-                gameRow.id = obj.getString("id");
-                gameRow.gametheme = obj.getString("name");
-                gameRow.correct = obj.getString("correct");
-                gameRow.incorrect = obj.getString("incorrect");
-                gameRow.datetime = obj.getString("datetime");
-                gameRow.currentGame = obj.getString("currentgame");
-                gameRow.datestring = obj.getString("datestring");
+                Themes themeRow = new Themes();
+                themeRow.id = obj.getString("id");
+                themeRow.gametheme = obj.getString("name");
+                themeRow.correct = obj.getString("correct");
+                themeRow.incorrect = obj.getString("incorrect");
+                themeRow.datetime = obj.getString("datetime");
+                themeRow.currentGame = obj.getString("currentgame");
+                themeRow.datestring = obj.getString("datestring");
 
-                listOfThemes.add(gameRow);
+                listOfThemes.add(themeRow);
             }
 
 

@@ -6,12 +6,14 @@
     <color name="appBack">#e4e0e1</color>
     <color name="purple">#cf75ef</color>
     <color name="lightblue">#ffb7ffff</color>
-    <color name="red">#ffff1811</color>
+    <color name="red">#c14d49</color>
     <color name="white">#99FFFFFF</color>
     <color name="yellow">#fffffb1f</color>
     <color name="black">#ff000000</color>
-    <color name="green">#FF11B377</color>
+    <color name="green">#87ec8f</color>
     <color name="pink">#ffb3f6</color>
+    <color name="fbBlue">#3b5998</color>
+    <color name="textWhite">#ffffff</color>
 
     <color name="black_overlay">#66000000</color>
 </resources>

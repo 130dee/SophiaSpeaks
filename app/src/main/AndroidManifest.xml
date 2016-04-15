@@ -23,7 +23,8 @@
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-    <uses-feature android:name="android.hardware.camera.front"
+    <uses-feature
+        android:name="android.hardware.camera.front"
         android:required="false" />
 
     <!-- GPS permissions for geo-tagging images -->
@@ -69,11 +70,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".DisplayPhoto"
-            android:label="@string/title_activity_displayPhoto"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
@@ -108,16 +104,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".WorkerActivity"
-            android:label="@string/title_activity_worker"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".RecordActivity"
-            android:label="@string/title_activity_record"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".MatchingGame"
             android:label="@string/title_activity_matching_game"
             android:screenOrientation="landscape"
@@ -126,7 +112,12 @@
             android:name=".ImageEditActivity"
             android:label="@string/title_activity_image_edit"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ParentHome"
+            android:label="@string/title_activity_parent_home"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

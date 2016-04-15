@@ -5,88 +5,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="@drawable/sophia_btmr"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/smalltag"
+
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="dee_conway_2016.fyp.dit.ie.sophiaspeaks.ParentView"
     tools:showIn="@layout/activity_parent_view">
 
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:weightSum="1"
-        android:id="@+id/linearLayout">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Games Page"
-            android:id="@+id/gamesHome"
-            android:layout_weight="0.33" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Image Page"
-            android:id="@+id/imagesHome"
-            android:layout_weight="0.33"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Sub User"
-            android:id="@+id/addUser"
-            android:layout_weight="0.33" />
-
-    </LinearLayout>
 
     <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout"
         android:layout_centerHorizontal="true"
-        android:weightSum="1"
+
         android:id="@+id/linearLayout2">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:id="@+id/currentImage"
-            android:layout_weight=".6"/>
+            android:id="@+id/currentImage"/>
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
+        <ImageButton
+            android:padding="@dimen/activity_edit_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@android:dimen/app_icon_size"
-            android:background="@drawable/googlesmall"
+            android:src="@drawable/mapiconnew"
             android:id="@+id/whereWasITaken"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:text=" "
-            android:hapticFeedbackEnabled="true"/>
-
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" X "
-            android:textSize="@android:dimen/app_icon_size"
-            android:textColor="@android:color/white"
-            android:background="@color/red"
-            android:layout_alignParentRight="true"
+            android:background="@android:color/transparent"
             android:hapticFeedbackEnabled="true"
             android:layout_alignParentTop="true"
-            android:id="@+id/close"/>
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:padding="@dimen/activity_edit_padding"
+            android:layout_height="wrap_content"
+            android:src="@drawable/closeicon"
+            android:hapticFeedbackEnabled="true"
+            android:id="@+id/close"
+            android:background="@android:color/transparent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -100,38 +65,44 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edit This Image"
+                android:text="@string/edit_image"
                 android:id="@+id/editImage"
                 android:layout_weight="0.50" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Get Most Recent Image"
+                android:text="@string/recent_image"
                 android:id="@+id/nextImage"
                 android:layout_weight="0.50" />
         </LinearLayout>
 
-        <ImageButton
+        <LinearLayout
+            android:id="@+id/themebtns"
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/correctTheme"
-            android:src="@drawable/yes2"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_above="@+id/linearLayout4"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="82dp">
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/wrongTheme"
-            android:src="@drawable/no"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
 
-      />
+            <ImageButton
+                android:contentDescription="@string/right_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/correctTheme"
+                android:src="@drawable/correctround"
+                android:background="@android:color/transparent" />
 
+            <ImageButton
+                android:contentDescription="@string/wrong_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/wrongTheme"
+                android:src="@drawable/wrondround"
+                android:background="@android:color/transparent" />
+        </LinearLayout>
 
     </RelativeLayout>
 

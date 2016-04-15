@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/sophia_btmr"
+    android:background="@drawable/smalltag"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -12,72 +12,103 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="dee_conway_2016.fyp.dit.ie.sophiaspeaks.TakePhoto"
     tools:showIn="@layout/activity_take_photo">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/emotions">
+
+        <ImageButton
+            android:contentDescription="@string/icon_button"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/activity_editbox"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_editbox"
+            android:background="@color/fbBlue"
+            android:src="@drawable/funny"
+            android:id="@+id/funnyyes" />
+
+        <ImageButton
+            android:contentDescription="@string/icon_button"
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/activity_editbox"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_editbox"
+            android:background="@color/fbBlue"
+            android:src="@drawable/likethis"
+            android:id="@+id/likethis" />
+
+        <ImageButton
+            android:contentDescription="@string/icon_button"
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/activity_editbox"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_editbox"
+            android:background="@color/fbBlue"
+            android:src="@drawable/want"
+            android:id="@+id/wantthis" />
+
+        <ImageButton
+            android:contentDescription="@string/icon_button"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/activity_editbox"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_editbox"
+            android:background="@color/fbBlue"
+            android:src="@drawable/whatisthis"
+            android:id="@+id/what"
+             />
+    </LinearLayout>
 
     <ImageView
+        android:contentDescription="@string/icon_button"
         android:layout_width="match_parent"
         android:hapticFeedbackEnabled="true"
         android:layout_height="match_parent"
         android:id="@+id/showThisImage"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/what"
-        android:hapticFeedbackEnabled="true"
-        android:src="@drawable/what"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/emotions"
         android:layout_centerHorizontal="true"
-        android:background="@android:color/transparent"/>
+        android:layout_centerVertical="true"
+         />
+
+
 
     <ImageButton
+        android:contentDescription="@string/icon_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/happy"
-        android:src="@drawable/happydace"
-        android:hapticFeedbackEnabled="true"
-        android:background="@android:color/transparent"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/what"
-        android:layout_toStartOf="@+id/what" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sad"
-        android:src="@drawable/sadface"
-        android:hapticFeedbackEnabled="true"
-        android:background="@android:color/transparent"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/what"
-        android:layout_toEndOf="@+id/what" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/x"
+        android:src="@drawable/stop"
+        android:padding="@dimen/activity_editbox"
         android:id="@+id/cancel"
-        android:layout_alignBottom="@+id/showThisImage"
-        android:layout_centerHorizontal="true"
         android:hapticFeedbackEnabled="true"
-        android:background="@android:color/transparent" />
+        android:background="@color/fbBlue"
+        android:layout_below="@+id/yesBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="53dp" />
 
     <ImageButton
+        android:contentDescription="@string/icon_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/yesBtn"
-        android:src="@drawable/yes2"
-        android:layout_alignParentBottom="true"
+        android:padding="@dimen/activity_editbox"
+        android:src="@drawable/themeyes"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@color/fbBlue" />
 
     <ImageButton
+        android:contentDescription="@string/icon_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/noBtn"
-        android:src="@drawable/no"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:padding="@dimen/activity_editbox"
+        android:src="@drawable/themeno"
+        android:layout_alignTop="@+id/yesBtn"
+        android:layout_alignRight="@+id/showThisImage"
+        android:layout_alignEnd="@+id/showThisImage"
+        android:background="@color/fbBlue"/>
 </RelativeLayout>

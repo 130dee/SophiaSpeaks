@@ -18,8 +18,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,16 +34,21 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 @SuppressWarnings("deprcated")
 public class ParentView extends AppCompatActivity implements View.OnClickListener{
 
-    Button gamehome,imagehome,addUser,showNext,closeView,editCurrentImage,getNextImage;
-    Button showLocation, addThistag;
+    Button showNext,editCurrentImage,getNextImage;
+    ImageButton showLocation, closeView;
     ImageButton correctTick,incorrectTick;
     ImageView nxt;
+    LinearLayout themeBtnLayout;
     EditText tagThis;
+    Boolean notCorrected = true;
 
     TextToSpeech voice;
     public static String messageFromSophia = "Say this";
@@ -49,14 +56,15 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
     public static String location;
     public static String imID;
     public static String question;
-    public static String imagethemeboolean;
+    public static String imagethemeboolean = "no";
     public static String description;
     public static final String SHARED = "globals";
     SharedPreferences shared;
 
     //Strings used as url parameters for GET requests
-    public static final String SHOW_THIS_URL = "http://52.50.76.1/sophia/getimages.php?email=";
-    public static final String UPDATE_THIS_URL = "http://52.50.76.1/sophia/update.php?job=";
+    public static final String SHOW_THIS_URL = "http://52.50.76.1/sophiaFYP/getimages.php?email=";
+    public static final String UPDATE_THIS_URL = "http://52.50.76.1/sophiaFYP/update.php?job=";
+    public static final String THEME_URL = "http://52.50.76.1/sophiaFYP/themetableupdate.php?";
     public static final String IM_TAG = "&attach=";
     public static final String ID ="id=";
 
@@ -77,27 +85,24 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
 
         shared = getSharedPreferences(SHARED, 0);
 
+        LinearLayout themeBtnLayout = (LinearLayout) findViewById(R.id.linearLayout4);
 
-        gamehome = (Button)findViewById(R.id.gamesHome);
-        imagehome=(Button)findViewById(R.id.imagesHome);
-        addUser = (Button)findViewById(R.id.addUser);
-        showLocation = (Button) findViewById(R.id.whereWasITaken);
-        closeView = (Button)findViewById(R.id.close);
+
+        showLocation = (ImageButton) findViewById(R.id.whereWasITaken);
+        closeView = (ImageButton)findViewById(R.id.close);
         editCurrentImage = (Button)findViewById(R.id.editImage);
         getNextImage = (Button) findViewById(R.id.nextImage);
         correctTick = (ImageButton) findViewById(R.id.correctTheme);
         incorrectTick = (ImageButton) findViewById(R.id.wrongTheme);
 
 
-        imagehome.setOnClickListener(this);
-        addUser.setOnClickListener(this);
-        gamehome.setOnClickListener(this);
+
         showLocation.setOnClickListener(this);
-        //showLocation.setVisibility(View.INVISIBLE);
         closeView.setOnClickListener(this);
-        //closeView.setVisibility(View.INVISIBLE);
         getNextImage.setOnClickListener(this);
         editCurrentImage.setOnClickListener(this);
+        correctTick.setOnClickListener(this);
+        incorrectTick.setOnClickListener(this);
 
 
         nxt = (ImageView)findViewById(R.id.currentImage);
@@ -111,8 +116,8 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
                 }
             }
         });
-        getNextImageAndDisplay();
 
+        getNextImageAndDisplay();
 
     }
     @Override
@@ -151,25 +156,20 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        if (v==gamehome){
+        /*if (v==gamehome){
             voice.speak("child", TextToSpeech.QUEUE_FLUSH, null);
             Intent intent = new Intent(this,AddGame.class);
             startActivity(intent);
 
         }
         else if (v==imagehome){
-            Intent intent = new Intent(this, RecordActivity.class);
+            Intent intent = new Intent(this, ParentHomeActivity.class);
 
             startActivity(intent);
 
-        }
-        else if (v==addUser){
-            Intent intent = new Intent(this, Register.class);
-            intent.putExtra("type", "child");
-            startActivity(intent);
+        }*/
 
-        }
-        else if (v == showLocation){
+        if (v == showLocation){
             // Creates an Intent that will load a map of San Francisco
             Uri gmmIntentUri = Uri.parse(location);
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -177,24 +177,29 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
             startActivity(mapIntent);
         }
         else if(v==closeView){
-            changeButtonViewInvisible();
+            finish();
         }
         else if (v==editCurrentImage){
             Intent intent = new Intent(this, ImageEditActivity.class);
             intent.putExtra("image",imURL);
             intent.putExtra("id",imID);
             intent.putExtra("question",question);
-            intent.putExtra("description",description);
+            intent.putExtra("description", description);
             startActivity(intent);
 
         }
         else if (v==getNextImage){
             //get list of images that have not been viewed yet order by upload time
+            nxt.setImageResource(0);
             getNextImageAndDisplay();
         }else if (v==correctTick){
-            //insert to themeGame
+            volleyTheme("yes");
+            notCorrected=false;
+            changeButtonViewVisible();
         }else if(v==incorrectTick){
-            //insert to themegame
+            volleyTheme("no");
+            notCorrected=false;
+            changeButtonViewVisible();
         }
     }
 
@@ -236,19 +241,19 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
             imID = obj.getString("id");
             imURL = obj.getString("photo");
             messageFromSophia= obj.getString("tag");
-            Picasso.with(this).load(imURL).into(nxt);
             location = obj.getString("locate");
             description= obj.getString("wordSound");
             question = obj.getString("question");
             imagethemeboolean = obj.getString("theme");
             uploadCommand(VIEWED.concat(ID).concat(imID));
+            changeButtonViewVisible();
+
 
         }catch(JSONException e){
             e.printStackTrace();
+            voice.speak(messageFromSophia, TextToSpeech.QUEUE_FLUSH, null);
         }
-        if(!messageFromSophia.equalsIgnoreCase("")){
-              voice.speak(messageFromSophia, TextToSpeech.QUEUE_FLUSH, null);
-        }
+
     }
 
     public void changeButtonViewInvisible(){
@@ -258,7 +263,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
     }
 
     public void changeButtonViewVisible(){
-        if(imagethemeboolean =="yes"){
+        if(!imagethemeboolean.equalsIgnoreCase("no")&&(notCorrected)){
             correctTick.setVisibility(View.VISIBLE);
             incorrectTick.setVisibility(View.VISIBLE);
             editCurrentImage.setVisibility(View.INVISIBLE);
@@ -269,10 +274,14 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
             editCurrentImage.setVisibility(View.VISIBLE);
             getNextImage.setVisibility(View.VISIBLE);
 
+
+
+
         }
         closeView.setVisibility(View.VISIBLE);
         showLocation.setVisibility(View.VISIBLE);
         nxt.setVisibility(View.VISIBLE);
+        notCorrected=true;
     }
 
     private void uploadCommand(String a){
@@ -290,7 +299,8 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
                 }else{
                     Log.d("myTag", "notUpdated");
                     //Toast.makeText(ParentView.this,type+"WAS NOT UPDATED",Toast.LENGTH_LONG).show();
-                }
+                }voice.speak(messageFromSophia, TextToSpeech.QUEUE_FLUSH, null);
+                Picasso.with(ParentView.this).load(imURL).into(nxt);
             }
         },
                 new Response.ErrorListener(){
@@ -305,34 +315,48 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
         thisQ.add(myQuery);
     }
 
-    public void checkInput(){
+    public void volleyTheme(String state) {
+        final String yes_no = state;
+        StringRequest myQuery = new StringRequest(Request.Method.POST, THEME_URL, new Response.Listener<String>() {
 
-        tagThis.setError(null);
-        String thisImageTag = tagThis.getText().toString().trim();
+            @Override
+            public void onResponse(String comeBack) {
+                String type = comeBack.trim();
+                if (type.equalsIgnoreCase("successful")) {
 
-        boolean cancel = false;
-        View focusView = null;
+                    Log.d("myTag", "found");
 
-        //check if text has been entered,
-        if (TextUtils.isEmpty(thisImageTag)){
-            tagThis.setError(getString(R.string.error_field_required));
-            focusView = tagThis;
-            cancel = true;
-        }
 
-        //if email and password are entered
-        if(!cancel){
-            cancel = false;
-            String payload = WORD.concat(ID).concat(imID).concat(IM_TAG).concat(thisImageTag);
-            tagThis.setText("");
-            uploadCommand(payload);
+                } else {
+                    Log.d("myTag", "notfound");
+                }
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
-        }
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("id", imID);
+                map.put("state", yes_no);
+                map.put("email",shared.getString("email","email"));
+                map.put("theme",imagethemeboolean);
+
+                return map;
+            }
+        };
+        RequestQueue rQue = Volley.newRequestQueue(this);
+        rQue.add(myQuery);
 
     }
 
     public void getNextImageAndDisplay(){
-        changeButtonViewVisible();
+
         getNextimage(shared.getString("email", "130dee@gmail.com"));
     }
 }

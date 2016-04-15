@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:background="@color/pink"
+    android:background="@drawable/smalltag"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -22,7 +22,7 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/backgroundImage"
         android:layout_centerHorizontal="true"
@@ -32,36 +32,70 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add description"
+            android:padding="@dimen/activity_editbox"
+            android:background="@color/fbBlue"
+            android:textColor="@color/textWhite"
+            android:layout_marginRight="@dimen/activity_editbox"
+            android:layout_marginEnd="@dimen/activity_edit_padding"
+            android:text="@string/add_desc"
             android:id="@+id/addDescription"
-            android:layout_weight="0.49" />
+            android:layout_weight="0.4" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add question"
+            android:text="@string/add_question"
+            android:padding="@dimen/activity_editbox"
+            android:layout_marginLeft="@dimen/activity_edit_padding"
+            android:layout_marginStart="@dimen/activity_edit_padding"
+            android:background="@color/fbBlue"
+            android:textColor="@color/textWhite"
             android:id="@+id/addquestion"
-            android:layout_weight="0.49" />
+            android:layout_weight="0.4" />
     </LinearLayout>
 
 
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete Image"
+        android:text="@string/deleteImage"
+        android:src="@drawable/dustbin"
+        android:padding="@dimen/activity_editbox"
         android:id="@+id/deleteThis"
+        android:background="@android:color/transparent"
+        android:textColor="@color/textWhite"
         android:layout_marginBottom="80dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/left"
+        android:id="@+id/lasteditphoto"
+        android:padding="@dimen/activity_editbox"
+        android:background="@android:color/transparent"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/rightarrow"
+        android:id="@+id/nexteditphoto"
+        android:padding="@dimen/activity_editbox"
+        android:background="@android:color/transparent"
+        android:layout_alignTop="@+id/lasteditphoto"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/descriptionLayout"
         android:layout_below="@+id/linearLayout3"
-        android:layout_centerHorizontal="true"
-        >
+        android:layout_centerHorizontal="true" >
 
         <EditText
             android:layout_width="wrap_content"
@@ -69,67 +103,100 @@
             android:background="@color/white"
             android:id="@+id/descriptionEdit"
             android:ems="10"
-            android:layout_marginTop="50dp"
             android:padding="@dimen/activity_edit_padding"
-            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
-
-        <Button
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Use Voice Input"
-            android:id="@+id/vBtn1"
             android:layout_below="@+id/descriptionEdit"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save Description"
-            android:id="@+id/save1"
-            android:layout_alignTop="@+id/vBtn1"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/questionLayout"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:id="@+id/questionEdit"
-            android:ems="10"
-            android:padding="@dimen/activity_edit_padding"
-            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp" />
+            android:weightSum="1"
+            android:id="@+id/linearLayoutvoice_save">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Use Voice Input"
-            android:id="@+id/vBtn2"
-            android:layout_below="@+id/questionEdit"
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_voice"
+                android:padding="@dimen/activity_editbox"
+                android:layout_marginRight="@dimen/activity_edit_padding"
+                android:layout_marginEnd="@dimen/activity_edit_padding"
+                android:background="@color/fbBlue"
+                android:textColor="@color/textWhite"
+                android:id="@+id/vBtn1"
+                android:layout_weight="0.4"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save_desc"
+                android:padding="@dimen/activity_editbox"
+                android:layout_marginLeft="@dimen/activity_edit_padding"
+                android:layout_marginStart="@dimen/activity_edit_padding"
+                android:id="@+id/save1"
+                android:background="@color/fbBlue"
+                android:textColor="@color/textWhite"
+                android:layout_weight="0.4"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/questionLayout"
+            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save Question"
-            android:id="@+id/save2"
-            android:layout_alignTop="@+id/vBtn2"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:id="@+id/questionEdit"
+                android:ems="10"
+                android:padding="@dimen/activity_edit_padding"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/questionEdit"
+                android:layout_centerHorizontal="true"
+                android:weightSum="1"
+                android:id="@+id/linearLayoutvoice_save2">
 
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_voice"
+                    android:padding="@dimen/activity_editbox"
+                    android:layout_marginRight="@dimen/activity_edit_padding"
+                    android:layout_marginEnd="@dimen/activity_edit_padding"
+                    android:background="@color/fbBlue"
+                    android:textColor="@color/textWhite"
+                    android:id="@+id/vBtn2"
+                    android:layout_weight="0.4"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save_question"
+                    android:padding="@dimen/activity_editbox"
+                    android:layout_marginLeft="@dimen/activity_edit_padding"
+                    android:layout_marginStart="@dimen/activity_edit_padding"
+                    android:id="@+id/save2"
+                    android:background="@color/fbBlue"
+                    android:textColor="@color/textWhite"
+                    android:layout_weight="0.4"/>
+            </LinearLayout>
+
+
+
+
+
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

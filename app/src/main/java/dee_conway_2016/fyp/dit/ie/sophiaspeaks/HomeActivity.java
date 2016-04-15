@@ -15,12 +15,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity implements  View.OnClickListener{
 
     TextToSpeech voice;
-    Button play, album, snap;
+    ImageButton play, album, snap;
     public static final String SHARED = "globals";
 
     @Override
@@ -30,9 +31,9 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        play = (Button) findViewById(R.id.playGame);
-        snap = (Button) findViewById(R.id.cameraButton);
-        album = (Button) findViewById(R.id.albumButton);
+        play = (ImageButton) findViewById(R.id.playGame);
+        snap = (ImageButton) findViewById(R.id.cameraButton);
+        album = (ImageButton) findViewById(R.id.albumButton);
         play.setOnClickListener(this);
         snap.setOnClickListener(this);
         album.setOnClickListener(this);
@@ -106,7 +107,7 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
         if (v == album) {
             //show album
                 String sayThis = "lets have a look at some photos";
-                voice.speak(sayThis, TextToSpeech.QUEUE_FLUSH, null);
+                //voice.speak(sayThis, TextToSpeech.QUEUE_FLUSH, null);
                 Intent intent = new Intent(this,AlbumActivity.class);
                 startActivity(intent);
 

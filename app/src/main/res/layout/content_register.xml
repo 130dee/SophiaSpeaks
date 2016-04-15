@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/sophia_btmr"
+    android:background="@drawable/smalltag"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -17,14 +17,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
-        android:hint="User Name"
+        android:hint="@string/hint_user"
         android:ems="10"
         android:id="@+id/uNameBox"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="37dp"
         android:hapticFeedbackEnabled="true"
-        />
+        android:text="onethirty" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -35,33 +35,35 @@
         android:layout_below="@+id/uNameBox"
         android:layout_alignLeft="@+id/uNameBox"
         android:layout_alignStart="@+id/uNameBox"
-        android:hint="Password"
-        android:hapticFeedbackEnabled="true"/>
+        android:hint="@string/hint_password"
+        android:hapticFeedbackEnabled="true"
+        android:text="super4" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:hint="First Name"
+        android:hint="@string/hint_first_name"
         android:ems="10"
         android:id="@+id/fNameBox"
         android:layout_below="@+id/passwordBox"
         android:layout_alignLeft="@+id/passwordBox"
         android:layout_alignStart="@+id/passwordBox"
-        android:hapticFeedbackEnabled="true"/>
+        android:hapticFeedbackEnabled="true"
+        android:text="Dee" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:hint="Last Name"
+        android:hint="@string/hint_last_name"
         android:ems="10"
         android:id="@+id/lNameBox"
         android:layout_below="@+id/fNameBox"
         android:layout_alignLeft="@+id/fNameBox"
         android:layout_alignStart="@+id/fNameBox"
         android:hapticFeedbackEnabled="true"
-        />
+        android:text="Cee" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -72,12 +74,15 @@
         android:layout_below="@+id/lNameBox"
         android:layout_alignLeft="@+id/lNameBox"
         android:layout_alignStart="@+id/lNameBox"
-        android:hint="Email Address" />
+        android:hint="@string/hint_email"
+        android:text="130dee@gmail.com" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:textColor="@color/textWhite"
+        android:background="@color/fbBlue"
+        android:text="@string/register_button"
         android:id="@+id/submitRegister"
         android:hapticFeedbackEnabled="true"
         android:layout_below="@+id/emailBox"
@@ -111,7 +116,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Give this login code to support workers"
+        android:text="@string/worker_code"
         android:background="@color/white"
         android:id="@+id/codeInstructions"
         android:layout_below="@+id/codeBox"

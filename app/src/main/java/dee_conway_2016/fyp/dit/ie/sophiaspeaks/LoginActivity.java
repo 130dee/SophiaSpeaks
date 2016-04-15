@@ -46,8 +46,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static final String myUsername = "username";
     public static final String myEmail = "email";
     public static final String mypwordKey = "password";
-    public static final String LoginURL = "http://52.50.76.1/sophia/remotelogin.php?username=";
-    public static final String WORKER_URL = "http://52.50.76.1/sophia/remoteworker.php?code=";
+    public static final String LoginURL = "http://52.50.76.1/sophiaFYP/remotelogin.php?username=";
+    public static final String WORKER_URL = "http://52.50.76.1/sophiaFYP/remoteworker.php?code=";
     SharedPreferences shared;
 
     private String mUsername;
@@ -66,11 +66,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        shared = getSharedPreferences(SHARED, 0);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        shared = getSharedPreferences(SHARED, 0);
 
         userNameView = (EditText)findViewById(R.id.editUserName);
         passwordLoginView = (EditText) findViewById(R.id.loginPassword);
@@ -185,7 +184,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onResponse(JSONArray response) {
                         waiting.dismiss();
                         if(response.length()==1){
-                            Toast.makeText(LoginActivity.this, response.length()+"",Toast.LENGTH_LONG).show();
+                            //Toast.makeText(LoginActivity.this, response.length()+"",Toast.LENGTH_LONG).show();
                             setcredentials(response);
                         }
                         else{
@@ -198,7 +197,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         waiting.dismiss();
-                        Toast.makeText(LoginActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                        //Toast.makeText(LoginActivity.this,error.toString(),Toast.LENGTH_LONG).show();
                     }
                 }
         ) {
@@ -218,11 +217,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onResponse(JSONArray response) {
                         waiting.dismiss();
                         if(response.length()==1){
-                            Toast.makeText(LoginActivity.this, response.length()+"",Toast.LENGTH_LONG).show();
+                            //Toast.makeText(LoginActivity.this, response.length()+"",Toast.LENGTH_LONG).show();
                             setWorkerCredentials(response);
                         }
                         else{
-                            Toast.makeText(LoginActivity.this,"WORKER NOT FOUND",Toast.LENGTH_LONG).show();
+                            //Toast.makeText(LoginActivity.this,"WORKER NOT FOUND",Toast.LENGTH_LONG).show();
                         }
                     }
 
@@ -231,7 +230,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         waiting.dismiss();
-                        Toast.makeText(LoginActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                        //Toast.makeText(LoginActivity.this,error.toString(),Toast.LENGTH_LONG).show();
                     }
                 }
         ) {
@@ -244,7 +243,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void setcredentials(JSONArray userCredentials){
 
         SharedPreferences.Editor editor = shared.edit();
-        Toast.makeText(LoginActivity.this,"INSIDE:"+shared.getString("access_code","type"),Toast.LENGTH_LONG).show();
+        //Toast.makeText(LoginActivity.this,"INSIDE:"+shared.getString("access_code","type"),Toast.LENGTH_LONG).show();
         try{
             JSONObject obj = null;
             obj = userCredentials.getJSONObject(0);
@@ -264,7 +263,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }catch(JSONException e){
             e.printStackTrace();
         }
-        Toast.makeText(LoginActivity.this,"INSIDE:"+shared.getString("access_code","type"),Toast.LENGTH_LONG).show();
+       // Toast.makeText(LoginActivity.this,"INSIDE:"+shared.getString("access_code","type"),Toast.LENGTH_LONG).show();
 
 
     }
@@ -272,7 +271,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void setWorkerCredentials(JSONArray userCredentials){
 
         SharedPreferences.Editor editor = shared.edit();
-        Toast.makeText(LoginActivity.this,"INSIDE:"+shared.getString("access_code","type"),Toast.LENGTH_LONG).show();
+        //Toast.makeText(LoginActivity.this,"INSIDE:"+shared.getString("access_code","type"),Toast.LENGTH_LONG).show();
         try{
             JSONObject obj = null;
             obj = userCredentials.getJSONObject(0);
@@ -286,13 +285,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }catch(JSONException e){
             e.printStackTrace();
         }
-        Toast.makeText(LoginActivity.this,"INSIDE:"+shared.getString("access_code","type"),Toast.LENGTH_LONG).show();
+       // Toast.makeText(LoginActivity.this,"INSIDE:"+shared.getString("access_code","type"),Toast.LENGTH_LONG).show();
 
 
     }
 
     public void gotoParent(){
-        Intent intent = new Intent(this, ParentView.class);
+        Intent intent = new Intent(this, ParentHome.class);
         startActivity(intent);
     }
     public void goToGamesPage(){

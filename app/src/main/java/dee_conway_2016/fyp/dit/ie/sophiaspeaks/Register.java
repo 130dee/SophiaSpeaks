@@ -36,7 +36,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     public static final String LNAME = "last";
     public static final String EMAIL = "email";
     public static final String ACCESSCODE = "code";
-    public static final String REG_URL = "http://52.50.76.1/sophia/remotereg.php";
+    public static final String REG_URL = "http://52.50.76.1/sophiaFYP/remotereg.php";
 
     public static final String SHARED = "globals";
 
@@ -116,8 +116,13 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         mUsername = uNameView.getText().toString().trim();
         mPassword = passwordView.getText().toString().trim();
         mFname = fNameView.getText().toString().trim();
-        mLname = shared.getString("lname","lastName");
+        mLname = shared.getString("lname", "lastName");
         mEmailAddress = shared.getString("email","emailAddress");
+        Toast.makeText(Register.this,mAccessCode+":" + mLname,Toast.LENGTH_LONG).show();
+
+
+
+
 
 
         boolean cancel = false;
@@ -146,6 +151,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         if(mAccessCode.equalsIgnoreCase("parent")){
             mLname =lNameView.getText().toString().trim();
             mEmailAddress = emailView.getText().toString().trim();
+            Toast.makeText(Register.this,mAccessCode+":"+  mLname,Toast.LENGTH_LONG).show();
             if (TextUtils.isEmpty(mLname)){
                 lNameView.setError(getString(R.string.error_field_required));
                 focusView = lNameView;
@@ -192,20 +198,20 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                 String type = comeBack.trim();
                 if(type.equalsIgnoreCase("successful")){
                     Log.d("myTag", "found");
-                    Toast.makeText(Register.this,comeBack,Toast.LENGTH_LONG).show();
+                   // Toast.makeText(Register.this,comeBack,Toast.LENGTH_LONG).show();
 
                 }else{
-                    error.setText(type);
-                    error.setVisibility(View.VISIBLE);
+                    //error.setText(type);
+                    //error.setVisibility(View.VISIBLE);
                     Log.d("myTag", "notfound");
-                    Toast.makeText(Register.this, comeBack, Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(Register.this, comeBack, Toast.LENGTH_LONG).show();
                 }
             }
         },
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(Register.this,"ERROR",Toast.LENGTH_LONG).show();
+                       // Toast.makeText(Register.this,"ERROR",Toast.LENGTH_LONG).show();
                     }
                 }
         ){
@@ -215,7 +221,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                 map.put(USERNAME, checkThisUsername);
                 map.put(PASSWORD, checkThisPword);
                 map.put(FNAME, checkThisFname);
-                map.put(LNAME, shared.getString("lname","default"));
+                map.put(LNAME, mLname);
                 map.put(EMAIL, checkThisEmail);
                 map.put(ACCESSCODE, mAccessCode);
                 return map;

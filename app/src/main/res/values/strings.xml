@@ -23,6 +23,48 @@
     <string name="title_activity_record">RecordActivity</string>
     <string name="title_activity_new_record">NewRecord</string>
     <string name="title_activity_image_edit">ImageEditActivity</string>
+    <string name="title_activity_parent_home">ParentHome</string>
+    <string name="create_theme">Create New Theme</string>
+    <string name="add_new_theme">Add new theme</string>
+    <string name="list_theme">List of Themes</string>
+    <string name="new_game">New Game</string>
+    <string name="play_game">Play Matching Game</string>
+    <string name="take_photo">Take A Photo</string>
+    <string name="show_album">Show the Photo Album</string>
+    <string name="add_desc">Add a Description</string>
+    <string name="add_question">Add a Question</string>
+    <string name="deleteImage">Delete Image</string>
+    <string name="add_voice">Voice Input</string>
+    <string name="save_desc">Save Description</string>
+    <string name="save_question">Save Question</string>
+    <string name="hint_user">Enter Username</string>
+    <string name="hint_password">Enter Password</string>
+    <string name="user_error_warning">Email Password combination error</string>
+    <string name="hint_code">Enter UserCode Here</string>
+    <string name="login_button">Login</string>
+    <string name="register_button">Register</string>
+    <string name="guessing_image">Image of random item for guessing game</string>
+    <string name="next_game">Icon placeholder for next game button</string>
+    <string name="hint_register">Register here before use</string>
+    <string name="hint_first_name">Enter First Name</string>
+    <string name="hint_last_name">Enter Last Name</string>
+    <string name="hint_email">Enter Email Address</string>
+    <string name="edit_image">Edit This Image</string>
+
+    <string name="trying_to_login">Trying To login</string>
+
+
+    <string name="icon_button">An icon button to add material to image</string>
+    <string name="worker_code">Pass this login code to any support workers</string>
+
+    <string name="recent_image">Get latest Image</string>
+    <string name="wrong_icon">A button icon of a correct tick</string>
+    <string name="right_icon">A buttn icon of an incorrect mark</string>
+
+
+    <string name="imedit_show">http://52.50.76.1/sophiaFYP/getalltaggedimages.php?email=</string>
+    <string name="imedit_update">http://52.50.76.1/sophiaFYP/updatefeelings.php?email=</string>
+
 
 
     <!-- Strings related to login -->

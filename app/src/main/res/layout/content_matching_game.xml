@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:background="@color/pink"
+    android:background="@drawable/notag"
     android:id="@+id/relativeGameView"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -19,14 +19,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:background="@color/pink"
         android:id="@+id/gameBackground"
         android:weightSum="1">
 
         <ImageView
+            android:contentDescription="@string/guessing_image"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/webView"
@@ -35,13 +34,15 @@
 
 
         <ImageView
+            android:contentDescription="@string/guessing_image"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/webView2"
-            android:layout_weight="0.33"
+            android:layout_weight="0.34"
             android:hapticFeedbackEnabled="true"/>
 
         <ImageView
+            android:contentDescription="@string/guessing_image"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/webView3"
@@ -50,16 +51,20 @@
     </LinearLayout>
 
     <ImageView
+        android:contentDescription="@string/guessing_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/answerView"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
+    <ImageButton
+        android:contentDescription="@string/next_game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next Game"
+        android:src="@drawable/again"
+        android:padding="@dimen/activity_editbox"
+        android:background="@color/fbBlue"
         android:id="@+id/nextGameBtn"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
