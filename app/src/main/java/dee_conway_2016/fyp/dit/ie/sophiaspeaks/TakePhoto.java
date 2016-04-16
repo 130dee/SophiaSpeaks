@@ -11,8 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -24,7 +22,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -36,15 +33,12 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationServices;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
@@ -74,7 +68,9 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     static int TAKE_PIC =1;
     private Uri outPutfileUri;
     private double x,y;
-    private String todaysTheme;
+    private String todaysTheme="";
+    private String answer="";
+
     private LinearLayout emotions;
 
 
@@ -206,7 +202,6 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
             bmap = BitmapFactory.decodeFile(outPutfileUri.getPath());
             setUpScreenQuestion();
             photoView.setImageBitmap(bmap);
-            //Toast.makeText(this, outPutfileUri.toString(), Toast.LENGTH_LONG).show();
         }else{finish();}
     }
 
@@ -216,33 +211,39 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         Boolean upload = false;
         String themeType = "no";
         if (v == cancel) {
-
+            answer = "";
             toSpeak = "Not sending this photo to mommy";
             finish();
         }
         if(v==funny){
+            answer = "";
             toSpeak = "This is funny";
             upload = true;
         }
 
         if (v == like) {
+            answer = "";
             toSpeak = "I like this";
             upload = true;
         }
         if (v == want) {
+            answer = "";
             toSpeak = "I want this";
             upload = true;
         }
         if (v == question) {
+            answer = "";
             toSpeak = "What is this";
             upload =true;
         }
         if(v==yes){
-            toSpeak = "This is a theme request photo of      "+todaysTheme;
+            answer = "yes...";
+            toSpeak = "I think this is a photo of... "+todaysTheme;
             upload = true;
             themeType = todaysTheme;
         }
         if(v==no){
+            answer="no...";
             setupScreenFeelings();
 
         }
@@ -250,8 +251,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         String tagOn = shared.getString("email", "");
         String xyCo_ords = "geo:0,0?q="+x+","+y+"loc";
         String time_date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-       // Toast.makeText(TakePhoto.this, time_date+": "+xyCo_ords, Toast.LENGTH_LONG).show();
-        voice.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+        voice.speak(answer+toSpeak, TextToSpeech.QUEUE_FLUSH, null);
         if(upload) {
             uploadThis(themeType, toSpeak,tagOn, xyCo_ords, time_date);
         }
@@ -342,12 +342,17 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     }
 
     public void setUpScreenQuestion(){
-        emotions.setVisibility(View.INVISIBLE);
-        cancel.setVisibility(View.INVISIBLE);
+        if(todaysTheme==""){
+            setupScreenFeelings();
+        }else {
+            emotions.setVisibility(View.INVISIBLE);
+            cancel.setVisibility(View.INVISIBLE);
 
-        yes.setVisibility(View.VISIBLE);
-        no.setVisibility(View.VISIBLE);
-        voice.speak("Is this a photograph of "+ todaysTheme, TextToSpeech.QUEUE_FLUSH, null);
+            yes.setVisibility(View.VISIBLE);
+            no.setVisibility(View.VISIBLE);
+
+            voice.speak("Is this a photograph of " + todaysTheme, TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 
     public void setupScreenFeelings(){

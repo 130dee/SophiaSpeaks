@@ -66,12 +66,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/edit_image"
+                android:layout_marginRight="@dimen/activity_editbox"
+                android:layout_marginEnd="@dimen/activity_editbox"
+                android:textColor="@color/textWhite"
+                android:background="@color/fbBlue"
                 android:id="@+id/editImage"
                 android:layout_weight="0.50" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_editbox"
+                android:layout_marginEnd="@dimen/activity_editbox"
+                android:textColor="@color/textWhite"
+                android:background="@color/fbBlue"
                 android:text="@string/recent_image"
                 android:id="@+id/nextImage"
                 android:layout_weight="0.50" />

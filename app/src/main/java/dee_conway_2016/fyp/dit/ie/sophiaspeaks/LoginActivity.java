@@ -243,7 +243,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void setcredentials(JSONArray userCredentials){
 
         SharedPreferences.Editor editor = shared.edit();
-        //Toast.makeText(LoginActivity.this,"INSIDE:"+shared.getString("access_code","type"),Toast.LENGTH_LONG).show();
         try{
             JSONObject obj = null;
             obj = userCredentials.getJSONObject(0);
@@ -263,8 +262,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }catch(JSONException e){
             e.printStackTrace();
         }
-       // Toast.makeText(LoginActivity.this,"INSIDE:"+shared.getString("access_code","type"),Toast.LENGTH_LONG).show();
-
 
     }
 

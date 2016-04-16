@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -140,7 +141,6 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         final ProgressDialog waiting = ProgressDialog.show(this,"Searching...",
                 "Getting Next Image..", false, false);
         String finalURL= SHOW_THIS_URL+email;
-        //Toast.makeText(AlbumActivity.this,finalURL, Toast.LENGTH_LONG).show();
 
         JsonArrayRequest jsonQuery = new JsonArrayRequest(JsonArrayRequest.Method.GET, finalURL,null,
                 new Response.Listener<JSONArray>() {
@@ -156,7 +156,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         waiting.dismiss();
-                        Toast.makeText(AlbumActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                        Log.d("myTag", "Volley Error getMyAlbum");
                     }
                 }
         ) {
@@ -167,10 +167,9 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void parseJSONtoList(JSONArray photosFromServer) {
-        String print ="Stuff:"+photosFromServer.length();
         if (photosFromServer.length() < 1) {
-            voice.speak("There are not enough photos to play a matching game", TextToSpeech.QUEUE_FLUSH, null);
-            voice.speak("Please try to play again later", TextToSpeech.QUEUE_FLUSH, null);
+            voice.speak("Sorry Sophia... There are no images in the album... ", TextToSpeech.QUEUE_FLUSH, null);
+            finish();
         } else {
             try {
                 for (int i = 0; i < photosFromServer.length(); i++) {
@@ -181,7 +180,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                     gameElement.game_image = obj.getString("photo");
                     gameElement.game_description = obj.getString("description");
 
-                    print.concat(i + ": ");
+
 
 
                     imageList.add(gameElement);
@@ -191,7 +190,6 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Toast.makeText(AlbumActivity.this,print,Toast.LENGTH_LONG).show();
             loadUpDisplayScreen();
         }
 

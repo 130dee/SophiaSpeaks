@@ -9,12 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -112,7 +110,7 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         waiting.dismiss();
-                        Toast.makeText(MatchingGame.this, error.toString(), Toast.LENGTH_LONG).show();
+                        Log.d("myTag", "volley Error");
                     }
                 }
         ) {
@@ -123,10 +121,12 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
     }
 
     public void parseJSONtoList(JSONArray photosFromServer) {
-        if (photosFromServer.length() < 10) {
+        if (photosFromServer.length() < 3) {
             nextGame.setVisibility(View.INVISIBLE);
             //voice.speak("There are not enough photos to play a matching game", TextToSpeech.QUEUE_FLUSH, null);
-            voice.speak("There are not enough photos to play a matching game ..."+ "Please try to play again later", TextToSpeech.QUEUE_FLUSH, null);
+            voice.speak("Sorry Sophia... There are not enough photos to play a matching game ..."+
+                    "Please try to play again later", TextToSpeech.QUEUE_FLUSH, null);
+            finish();
         } else {
             try {
                 for (int i = 0; i < photosFromServer.length(); i++) {
@@ -166,7 +166,7 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
 
                             @Override
                             public void onError() {
-                                Toast.makeText(MatchingGame.this, "Image A NOT being displayed", Toast.LENGTH_LONG).show();
+                                Log.d("myTag", "volley Error");
 
                             }
                         });
@@ -186,7 +186,7 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
 
                             @Override
                             public void onError() {
-                                Toast.makeText(MatchingGame.this, "Image B NOT being displayed", Toast.LENGTH_LONG).show();
+                                Log.d("myTag", "Picasso Error");
 
                             }
                         });
@@ -205,8 +205,7 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
 
                             @Override
                             public void onError() {
-                                Toast.makeText(MatchingGame.this, threeImagesForGame.get(2).game_image + "Image C NOT being displayed", Toast.LENGTH_LONG).show();
-
+                                Log.d("myTag", "Picasso Error");
                             }
                         });
                 askQuestion();

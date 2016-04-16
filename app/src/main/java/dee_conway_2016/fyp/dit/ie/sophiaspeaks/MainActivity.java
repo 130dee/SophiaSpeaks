@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
              Intent intent = new Intent(this,HomeActivity.class);
              startActivity(intent);
          }else{
-             Toast.makeText(MainActivity.this,userType,Toast.LENGTH_LONG).show();
+             Log.d("myTag", "goHome Error");
              SharedPreferences.Editor editor = shared.edit();
              editor.putString("amLogged","false");
              editor.apply();

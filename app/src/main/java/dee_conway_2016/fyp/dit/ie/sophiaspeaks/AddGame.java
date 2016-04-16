@@ -157,7 +157,6 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yy");
         final String dateString = ((Long) System.currentTimeMillis()).toString();
         final String dateView = sdf.format(systime);
-        Toast.makeText(AddGame.this, dateView, Toast.LENGTH_LONG).show();
 
 
         final String addThis = addthisStringToTheGameList;
@@ -167,11 +166,11 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
             public void onResponse(String comeBack){
                 Log.d("myTag", comeBack);
                 if(comeBack.trim().equalsIgnoreCase("success")){
-                    Toast.makeText(AddGame.this, comeBack, Toast.LENGTH_LONG).show();
+                    Log.d("myTag", comeBack);
                     gameTag.setText(null);
                     waiting.dismiss();
                 }else{
-                    Toast.makeText(AddGame.this, comeBack, Toast.LENGTH_LONG).show();
+                    Log.d("myTag", comeBack);
                     gameTag.setText(null);
                     waiting.dismiss();
                 }
@@ -180,7 +179,7 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(AddGame.this,"ERROR",Toast.LENGTH_LONG).show();
+                        Log.d("myTag", "VolleyError Addgame");
                     }
                 }
         ){
@@ -204,22 +203,21 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
         final ProgressDialog waiting = ProgressDialog.show(this,"Searching...",
                 "Authenticating User details..", false, false);
         String finalURL= GAMES_URL+mail;
-        Toast.makeText(AddGame.this,finalURL,Toast.LENGTH_LONG).show();
+
         JsonArrayRequest jsonQuery = new JsonArrayRequest(JsonArrayRequest.Method.GET, finalURL,null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         waiting.dismiss();
-
-                        Toast.makeText(AddGame.this, response.length()+"",Toast.LENGTH_LONG).show();
                         displayGameList(response);
+                        Log.d("myTag", "success gamesGet");
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         waiting.dismiss();
-                        Toast.makeText(AddGame.this,error.toString(),Toast.LENGTH_LONG).show();
+                        Log.d("myTag", "Error gamesGet");
                     }
                 }
         ) {

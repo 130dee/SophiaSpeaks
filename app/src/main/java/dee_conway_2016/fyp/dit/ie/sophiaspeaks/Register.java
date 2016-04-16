@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -85,6 +84,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         emailView= (EditText)findViewById(R.id.emailBox);
         codeText = (TextView)findViewById(R.id.codeBox);
         codeInstructions = (TextView)findViewById(R.id.codeInstructions);
+        codeText.setVisibility(View.INVISIBLE);
+        codeInstructions.setVisibility(View.INVISIBLE);
+        error = (TextView) findViewById(R.id.errorBox);
+        error.setVisibility(View.INVISIBLE);
 
         if(type.equalsIgnoreCase("child")){
             
@@ -96,11 +99,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         }
 
         submitReg = (Button) findViewById(R.id.submitRegister);
-        submitReg.setText("Add "+mAccessCode);
+        submitReg.setText("Add " + mAccessCode);
         submitReg.setOnClickListener(this);
 
 
-        error = (TextView) findViewById(R.id.errorView);
+
 
 
     }
@@ -118,7 +121,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         mFname = fNameView.getText().toString().trim();
         mLname = shared.getString("lname", "lastName");
         mEmailAddress = shared.getString("email","emailAddress");
-        Toast.makeText(Register.this,mAccessCode+":" + mLname,Toast.LENGTH_LONG).show();
+
 
 
 
@@ -151,7 +154,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         if(mAccessCode.equalsIgnoreCase("parent")){
             mLname =lNameView.getText().toString().trim();
             mEmailAddress = emailView.getText().toString().trim();
-            Toast.makeText(Register.this,mAccessCode+":"+  mLname,Toast.LENGTH_LONG).show();
+            Log.d("myTag", mLname);
             if (TextUtils.isEmpty(mLname)){
                 lNameView.setError(getString(R.string.error_field_required));
                 focusView = lNameView;
@@ -198,20 +201,19 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                 String type = comeBack.trim();
                 if(type.equalsIgnoreCase("successful")){
                     Log.d("myTag", "found");
-                   // Toast.makeText(Register.this,comeBack,Toast.LENGTH_LONG).show();
+                    finish();
 
                 }else{
-                    //error.setText(type);
-                    //error.setVisibility(View.VISIBLE);
-                    Log.d("myTag", "notfound");
-                  //  Toast.makeText(Register.this, comeBack, Toast.LENGTH_LONG).show();
+                    error.setText(type);
+                    error.setVisibility(View.VISIBLE);
+                    Log.d("myTag", type);
                 }
             }
         },
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                       // Toast.makeText(Register.this,"ERROR",Toast.LENGTH_LONG).show();
+                        Log.d("myTag", "VolleyError");
                     }
                 }
         ){

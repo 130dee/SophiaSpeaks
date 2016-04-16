@@ -86,27 +86,18 @@
         android:id="@+id/submitRegister"
         android:hapticFeedbackEnabled="true"
         android:layout_below="@+id/emailBox"
-        android:layout_alignLeft="@+id/errorView"
-        android:layout_alignStart="@+id/errorView" />
-
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/errorView"
-        android:layout_alignParentBottom="true"
-        android:hapticFeedbackEnabled="true"
         android:layout_centerHorizontal="true" />
+
+
+
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/activity_edit_padding"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:background="@color/white"
+        android:background="@color/textWhite"
         android:id="@+id/codeBox"
         android:layout_below="@+id/submitRegister"
         android:layout_centerHorizontal="true"
@@ -115,10 +106,22 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="@dimen/activity_editbox"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/worker_code"
-        android:background="@color/white"
+        android:background="@color/textWhite"
         android:id="@+id/codeInstructions"
         android:layout_below="@+id/codeBox"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_editbox"
+        android:background="@color/textWhite"
+        android:textColor="@color/red"
+        android:text="New Text"
+        android:id="@+id/errorBox"
+        android:layout_below="@+id/submitRegister"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

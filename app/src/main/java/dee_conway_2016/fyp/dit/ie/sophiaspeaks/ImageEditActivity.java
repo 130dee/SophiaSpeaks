@@ -66,7 +66,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
 
     EditText addQuestionText, addDescriptionText;
     Button questionAddBtn,descriptionAddBtn,getDescriptionVoiceBtn,getQuestionVoiceBtn
-            ,saveQuestionBtn,saveDescriptionBtn;
+            ,saveQuestionBtn,saveDescriptionBtn,discard1,discard2;
     ImageButton deleteImageBtn,nextImage,lastImage;
 
     RelativeLayout editdescription,editquestion;
@@ -123,6 +123,9 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         getDescriptionVoiceBtn.setOnClickListener(this);
         saveDescriptionBtn = (Button)findViewById(R.id.save1);
         saveDescriptionBtn.setOnClickListener(this);
+        discard2 = (Button) findViewById(R.id.discard2);
+        discard2.setOnClickListener(this);
+
 
         editdescription = (RelativeLayout) findViewById(R.id.descriptionLayout);
         questionAddBtn = (Button)findViewById(R.id.addquestion);
@@ -132,6 +135,8 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         getQuestionVoiceBtn.setOnClickListener(this);
         saveQuestionBtn = (Button)findViewById(R.id.save2);
         saveQuestionBtn.setOnClickListener(this);
+        discard1 = (Button) findViewById(R.id.discard);
+        discard1.setOnClickListener(this);
 
         deleteImageBtn = (ImageButton)findViewById(R.id.deleteThis);
         deleteImageBtn.setOnClickListener(this);
@@ -156,9 +161,6 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
                 displayimage = "";
             }
             final String image = displayimage;
-
-            //Toast.makeText(ImageEditActivity.this,image,Toast.LENGTH_LONG).show();
-            //imageid = b.getString("id");
 
             try {
                 imageid = getIntent().getExtras().getString("id");
@@ -209,60 +211,57 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        if(v==descriptionAddBtn){
-            deleteImageBtn.setVisibility(View.INVISIBLE);
-            editquestion.setVisibility(View.INVISIBLE);
+        if ((v == discard1) || (v == discard2)) {
+            putButtonsBack();
+        }
+        if (v == descriptionAddBtn) {
+            deleteButtonsView();
             editdescription.setVisibility(View.VISIBLE);
-            first=true;
-            addQuestionText.setText("");
             addDescriptionText.setText("");
+            first = true;
 
         }
-        if(v==questionAddBtn){
-            deleteImageBtn.setVisibility(View.INVISIBLE);
-            editdescription.setVisibility(View.INVISIBLE);
+        if (v == questionAddBtn) {
+            deleteButtonsView();
             editquestion.setVisibility(View.VISIBLE);
             addQuestionText.setText("");
-            addDescriptionText.setText("");
-            first=false;
+            first = false;
         }
-        if(v==getDescriptionVoiceBtn){
+        if (v == getDescriptionVoiceBtn) {
             promptSpeechInput();
         }
-        if(v==getQuestionVoiceBtn){
+        if (v == getQuestionVoiceBtn) {
             promptSpeechInput();
         }
-        if(v==saveQuestionBtn){
-            deleteImageBtn.setVisibility(View.VISIBLE);
+        if (v == saveQuestionBtn) {
             question = addQuestionText.getText().toString();
             volleyPut(saveQ);
-            editquestion.setVisibility(View.INVISIBLE);
+            putButtonsBack();
         }
-        if(v==saveDescriptionBtn){
-            deleteImageBtn.setVisibility(View.VISIBLE);
+        if (v == saveDescriptionBtn) {
             description = addDescriptionText.getText().toString();
-            editdescription.setVisibility(View.INVISIBLE);
             volleyPut(saveD);
+            putButtonsBack();
 
         }
-        if(v==nextImage){
+        if (v == nextImage) {
             counter++;
-            if(counter>= imageList.size()){
-                counter=imageList.size();
+            if (counter >= imageList.size()) {
+                counter = imageList.size();
                 voice.speak("No More images waiting to be edited", TextToSpeech.QUEUE_FLUSH, null);
                 finish();
-            }else{
+            } else {
                 loadUpDisplayScreen();
             }
 
         }
-        if(v==lastImage){
+        if (v == lastImage) {
             counter--;
-            if(counter<= 0){
-                counter=0;
+            if (counter <= 0) {
+                counter = 0;
                 voice.speak("No More images waiting to be edited", TextToSpeech.QUEUE_FLUSH, null);
                 finish();
-            }else{
+            } else {
                 loadUpDisplayScreen();
             }
 
@@ -272,6 +271,23 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
             volleyPut(delete);
         }
 
+    }
+
+    public void deleteButtonsView(){
+        questionAddBtn.setVisibility(View.INVISIBLE);
+        descriptionAddBtn.setVisibility(View.INVISIBLE);
+        deleteImageBtn.setVisibility(View.INVISIBLE);
+        nextImage.setVisibility(View.INVISIBLE);
+        lastImage.setVisibility(View.INVISIBLE);
+    }
+    public void putButtonsBack(){
+        editdescription.setVisibility(View.INVISIBLE);
+        editquestion.setVisibility(View.INVISIBLE);
+        questionAddBtn.setVisibility(View.VISIBLE);
+        descriptionAddBtn.setVisibility(View.VISIBLE);
+        deleteImageBtn.setVisibility(View.VISIBLE);
+        nextImage.setVisibility(View.VISIBLE);
+        lastImage.setVisibility(View.VISIBLE);
     }
 
 
@@ -290,9 +306,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         try {
             startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
         } catch (ActivityNotFoundException a) {
-            Toast.makeText(getApplicationContext(),
-                    "speech_not_supported",
-                    Toast.LENGTH_SHORT).show();
+            Log.d("myTag", "camera error");
         }
     }
 
@@ -362,7 +376,6 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
                 "Uploading changes..", false, false);
         final String thisJob = task;
 
-        Toast.makeText(ImageEditActivity.this,thisJob+" : "+imageid+" : "+question+" : "+description+" : "+IMAGE_EDIT_URL,Toast.LENGTH_LONG).show();
         StringRequest myQuery = new StringRequest(Request.Method.POST,IMAGE_EDIT_URL,new Response.Listener<String>(){
             @Override
             public void onResponse(String comeBack){
@@ -372,14 +385,12 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
                 if(type.equalsIgnoreCase("successful")){
                     waiting.dismiss();
                     Log.d("myTag", "found");
-                    Toast.makeText(ImageEditActivity.this,comeBack,Toast.LENGTH_LONG).show();
                     editquestion.setVisibility(View.INVISIBLE);
                     editdescription.setVisibility(View.INVISIBLE);
 
                 }else{
                     waiting.dismiss();
                     Log.d("myTag", "notfound");
-                    Toast.makeText(ImageEditActivity.this, comeBack, Toast.LENGTH_LONG).show();
                 }
             }
         },
@@ -387,7 +398,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
                     @Override
                     public void onErrorResponse(VolleyError error){
                         waiting.dismiss();
-                        Toast.makeText(ImageEditActivity.this,"ERROR",Toast.LENGTH_LONG).show();
+                        Log.d("myTag", "volley error");
                     }
                 }
         ){

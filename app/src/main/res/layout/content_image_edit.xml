@@ -140,7 +140,21 @@
                 android:layout_weight="0.4"/>
         </LinearLayout>
 
-        <RelativeLayout
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_editbox"
+            android:text="Discard Changes"
+            android:id="@+id/discard"
+            android:layout_below="@+id/linearLayoutvoice_save"
+            android:background="@color/fbBlue"
+            android:textColor="@color/textWhite"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="45dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/questionLayout"
@@ -191,14 +205,22 @@
                     android:layout_weight="0.4"/>
             </LinearLayout>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_editbox"
+            android:text="Discard Changes"
+            android:id="@+id/discard2"
+            android:layout_below="@+id/linearLayoutvoice_save2"
+            android:background="@color/fbBlue"
+            android:textColor="@color/textWhite"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="45dp" />
 
-
-
-
-
-        </RelativeLayout>
 
     </RelativeLayout>
+
+
 
 
 </RelativeLayout>

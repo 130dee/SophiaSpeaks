@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -207,7 +205,6 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
         final ProgressDialog waiting = ProgressDialog.show(this,"Searching...",
                 "Getting Next Image..", false, false);
         String finalURL= SHOW_THIS_URL+email;
-        //Toast.makeText(ParentView.this,finalURL,Toast.LENGTH_LONG).show();
         JsonArrayRequest jsonQuery = new JsonArrayRequest(JsonArrayRequest.Method.GET, finalURL,null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -221,7 +218,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         waiting.dismiss();
-                        //Toast.makeText(ParentView.this,error.toString(),Toast.LENGTH_LONG).show();
+                        Log.d("myTag", "volley Error");
                     }
                 }
         ) {
