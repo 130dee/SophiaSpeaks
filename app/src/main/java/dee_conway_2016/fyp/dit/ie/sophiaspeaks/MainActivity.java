@@ -1,8 +1,10 @@
 package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String SHARED = "globals";
     private Button open;
     public SharedPreferences shared;
+    Vibrator buttonVibe;
 
 
     @Override
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         shared = getSharedPreferences(SHARED, 0);
         open = (Button) findViewById(R.id.button);
         open.setOnClickListener(this);
+
+        buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     @Override
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
 
+        buttonVibe.vibrate(100);
         Intent intent = new Intent(this,LoginActivity.class);
         startActivity(intent);
 

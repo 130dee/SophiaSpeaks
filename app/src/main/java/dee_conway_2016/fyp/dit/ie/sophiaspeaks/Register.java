@@ -1,8 +1,10 @@
 package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -36,6 +38,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     public static final String EMAIL = "email";
     public static final String ACCESSCODE = "code";
     public static final String REG_URL = "http://52.50.76.1/sophiaFYP/remotereg.php";
+    Vibrator buttonVibe;
 
     public static final String SHARED = "globals";
 
@@ -63,6 +66,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         setContentView(R.layout.activity_register);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         shared = getSharedPreferences(SHARED, 0);
 
@@ -237,6 +241,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if (v==submitReg) {
+            buttonVibe.vibrate(100);
             registerFormSubmit();
         }
     }

@@ -1,10 +1,12 @@
 package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -47,6 +49,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
     LinearLayout themeBtnLayout;
     EditText tagThis;
     Boolean notCorrected = true;
+    Vibrator buttonVibe;
 
     TextToSpeech voice;
     public static String messageFromSophia = "Say this";
@@ -80,6 +83,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.activity_parent_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         shared = getSharedPreferences(SHARED, 0);
 
@@ -154,18 +158,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        /*if (v==gamehome){
-            voice.speak("child", TextToSpeech.QUEUE_FLUSH, null);
-            Intent intent = new Intent(this,AddGame.class);
-            startActivity(intent);
-
-        }
-        else if (v==imagehome){
-            Intent intent = new Intent(this, ParentHomeActivity.class);
-
-            startActivity(intent);
-
-        }*/
+        buttonVibe.vibrate(100);
 
         if (v == showLocation){
             // Creates an Intent that will load a map of San Francisco

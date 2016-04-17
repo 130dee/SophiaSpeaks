@@ -2,8 +2,10 @@ package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -50,6 +52,7 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
     EditText gameTag;
     ListView theme;
     ListAdapter adapter;
+    Vibrator buttonVibe;
 
 
     ArrayList<Themes> listOfThemes = new ArrayList<Themes>();
@@ -91,6 +94,7 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
         setContentView(R.layout.activity_add_game);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         shared = getSharedPreferences(SHARED, 0);
 
@@ -116,7 +120,7 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
     //A listener that listens for clicks on any button
     @Override
     public void onClick(View v) {
-
+        buttonVibe.vibrate(100);
         if(v==addNewTheme){
             //add a new theme to database and start theme game
             //clear the txt box

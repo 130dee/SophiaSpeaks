@@ -2,8 +2,10 @@ package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 
@@ -49,6 +51,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static final String LoginURL = "http://52.50.76.1/sophiaFYP/remotelogin.php?username=";
     public static final String WORKER_URL = "http://52.50.76.1/sophiaFYP/remoteworker.php?code=";
     SharedPreferences shared;
+    Vibrator buttonVibe;
 
     private String mUsername;
     private String mPword;
@@ -68,6 +71,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         shared = getSharedPreferences(SHARED, 0);
 
@@ -121,6 +125,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        buttonVibe.vibrate(100);
         if(v==logMeIn){
             login();
         }

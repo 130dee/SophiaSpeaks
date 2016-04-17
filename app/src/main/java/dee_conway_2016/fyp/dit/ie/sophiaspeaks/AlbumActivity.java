@@ -1,8 +1,10 @@
 package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -41,6 +43,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     int counter=0;
     public static final String SHARED = "globals";
     SharedPreferences shared;
+    Vibrator buttonVibe;
 
 
     ArrayList<GamesImage> imageList;
@@ -51,6 +54,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_album);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         shared = getSharedPreferences(SHARED, 0);
 
@@ -86,6 +90,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        buttonVibe.vibrate(100);
 
         if((v==next)||(v==last)){
             {

@@ -2,6 +2,7 @@ package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
@@ -54,6 +56,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
     public static final String UPDATE_GUESS_URL = "http://52.50.76.1/sophiaFYP/updatefeelings.php?email=";
     public static final String IMAGE_EDIT_URL = "http://52.50.76.1/sophiaFYP/imageedit.php";
     public static final String NEED_EDIT_URL = "http://52.50.76.1/sophiaFYP/needsedit.php?email=";
+    Vibrator buttonVibe;
 
     TextToSpeech voice;
     ImageView backgroundImageDispplay;
@@ -96,6 +99,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_image_edit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         shared = getSharedPreferences(SHARED, 0);
         imageList = new ArrayList<EditImage>();
         saveQ = "saveQ";
@@ -211,6 +215,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
+        buttonVibe.vibrate(100);
         if ((v == discard1) || (v == discard2)) {
             putButtonsBack();
         }
@@ -428,7 +433,6 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         final ProgressDialog waiting = ProgressDialog.show(this,"Searching...",
                 "Getting Next Image..", false, false);
         String finalURL= NEED_EDIT_URL+email;
-        Toast.makeText(ImageEditActivity.this,finalURL, Toast.LENGTH_LONG).show();
 
         JsonArrayRequest jsonQuery = new JsonArrayRequest(JsonArrayRequest.Method.GET, finalURL,null,
                 new Response.Listener<JSONArray>() {
@@ -444,7 +448,6 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         waiting.dismiss();
-                        Toast.makeText(ImageEditActivity.this, error.toString(), Toast.LENGTH_LONG).show();
                     }
                 }
         ) {
@@ -455,7 +458,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void parseJSONtoList(JSONArray photosFromServer) {
-        String print ="Stuff:"+photosFromServer.length();
+
         if (photosFromServer.length() < 1) {
             voice.speak("There are no images waiting to be edited", TextToSpeech.QUEUE_FLUSH, null);
         } else {
@@ -479,7 +482,6 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Toast.makeText(ImageEditActivity.this,print,Toast.LENGTH_LONG).show();
             loadUpDisplayScreen();
         }
 

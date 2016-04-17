@@ -1,6 +1,7 @@
 package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
@@ -51,6 +53,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     public static final String EMAIL = "email";
     public static final String TIMESTAMP = "tdate";
     public static final String ISTHEME = "theme";
+    Vibrator buttonVibe;
 
 
     public static final String LOCATION = "location";
@@ -81,6 +84,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         setContentView(R.layout.activity_take_photo);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
 
         shared = getSharedPreferences(SHARED, 0);
@@ -207,6 +211,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        buttonVibe.vibrate(100);
         String toSpeak = "";
         Boolean upload = false;
         String themeType = "no";

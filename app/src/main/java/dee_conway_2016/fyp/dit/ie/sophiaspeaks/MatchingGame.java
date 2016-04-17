@@ -1,8 +1,10 @@
 package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -49,6 +51,7 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
     TextToSpeech voice;
     int n;
     String correctAnswer, iAmTheId, iAmTheResult, iAmTheRightimage, iAmTheGuessimage, correctQuestion;
+    Vibrator buttonVibe;
 
     ArrayList<GamesImage> threeImagesForGame;
 
@@ -58,6 +61,7 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
         setContentView(R.layout.activity_matching_game);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         shared = getSharedPreferences(SHARED, 0);
 
@@ -236,6 +240,7 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        buttonVibe.vibrate(100);
         if (v == a) {
             checkAnswer(0);
 
@@ -285,6 +290,7 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
 
     @Override
     public void onClick(View v) {
+        buttonVibe.vibrate(100);
         view.setBackgroundColor(getResources().getColor(R.color.pink));
         enableClick();
         setupNewGame();

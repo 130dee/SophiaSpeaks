@@ -1,8 +1,10 @@
 package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +24,7 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
     TextToSpeech voice;
     ImageButton play, album, snap;
     public static final String SHARED = "globals";
+    Vibrator buttonVibe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         play = (ImageButton) findViewById(R.id.playGame);
         snap = (ImageButton) findViewById(R.id.cameraButton);
@@ -90,6 +94,7 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
 
     @Override
     public void onClick(View v) {
+        buttonVibe.vibrate(100);
 
         if (v == play) {
             //go to game activity

@@ -1,9 +1,11 @@
 package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -18,6 +20,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 public class ParentHome extends AppCompatActivity implements View.OnClickListener {
 
     ImageButton checkmess, editIms, addSub, child, worker;
+    Vibrator buttonVibe;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -30,6 +33,7 @@ public class ParentHome extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.activity_parent_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         checkmess = (ImageButton) findViewById(R.id.ckmessages);
         editIms = (ImageButton) findViewById(R.id.editIms);
@@ -70,6 +74,7 @@ public class ParentHome extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
+        buttonVibe.vibrate(100);
         if (v == checkmess) {
             Intent intent = new Intent(this, ParentView.class);
             startActivity(intent);
