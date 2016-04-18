@@ -68,8 +68,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
 
 
     EditText addQuestionText, addDescriptionText;
-    Button questionAddBtn,descriptionAddBtn,getDescriptionVoiceBtn,getQuestionVoiceBtn
-            ,saveQuestionBtn,saveDescriptionBtn,discard1,discard2;
+    Button descriptionAddBtn,getDescriptionVoiceBtn,saveDescriptionBtn,discard1;
     ImageButton deleteImageBtn,nextImage,lastImage;
 
     RelativeLayout editdescription,editquestion;
@@ -77,7 +76,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
 
     Intent intent;
     boolean first = true;
-    String saveQ,saveD,delete,imageid,question,description;
+    String saveD,delete,imageid,description;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -102,7 +101,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         shared = getSharedPreferences(SHARED, 0);
         imageList = new ArrayList<EditImage>();
-        saveQ = "saveQ";
+
         saveD = "saveD";
         delete = "delete";
 
@@ -119,26 +118,16 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-        editquestion = (RelativeLayout) findViewById(R.id.questionLayout);
-        descriptionAddBtn = (Button)findViewById(R.id.addDescription);
-        descriptionAddBtn.setOnClickListener(this);
-        addDescriptionText= (EditText)findViewById(R.id.descriptionEdit);
-        getDescriptionVoiceBtn = (Button)findViewById(R.id.vBtn1);
-        getDescriptionVoiceBtn.setOnClickListener(this);
-        saveDescriptionBtn = (Button)findViewById(R.id.save1);
-        saveDescriptionBtn.setOnClickListener(this);
-        discard2 = (Button) findViewById(R.id.discard2);
-        discard2.setOnClickListener(this);
 
 
         editdescription = (RelativeLayout) findViewById(R.id.descriptionLayout);
-        questionAddBtn = (Button)findViewById(R.id.addquestion);
-        questionAddBtn.setOnClickListener(this);
-        addQuestionText= (EditText)findViewById(R.id.questionEdit);
-        getQuestionVoiceBtn = (Button)findViewById(R.id.vBtn2);
-        getQuestionVoiceBtn.setOnClickListener(this);
-        saveQuestionBtn = (Button)findViewById(R.id.save2);
-        saveQuestionBtn.setOnClickListener(this);
+        descriptionAddBtn = (Button)findViewById(R.id.addDescription);
+        descriptionAddBtn.setOnClickListener(this);
+        addDescriptionText= (EditText)findViewById(R.id.descriptionEdit);
+        getDescriptionVoiceBtn= (Button)findViewById(R.id.vBtn1);
+        getDescriptionVoiceBtn.setOnClickListener(this);
+        saveDescriptionBtn = (Button)findViewById(R.id.save1);
+        saveDescriptionBtn.setOnClickListener(this);
         discard1 = (Button) findViewById(R.id.discard);
         discard1.setOnClickListener(this);
 
@@ -150,7 +139,6 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         lastImage.setOnClickListener(this);
 
         editdescription.setVisibility(View.INVISIBLE);
-        editquestion.setVisibility(View.INVISIBLE);
 
         backgroundImageDispplay = (ImageView)findViewById(R.id.backgroundImage);
 
@@ -174,11 +162,6 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
                 imageid = "";
             }
 
-            try {
-                question = getIntent().getExtras().getString("question");
-            } catch (NullPointerException e ) {
-                question = "";
-            }
 
             try {
                 description = getIntent().getExtras().getString("description");
@@ -216,7 +199,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         buttonVibe.vibrate(100);
-        if ((v == discard1) || (v == discard2)) {
+        if (v == discard1) {
             putButtonsBack();
         }
         if (v == descriptionAddBtn) {
@@ -226,23 +209,12 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
             first = true;
 
         }
-        if (v == questionAddBtn) {
-            deleteButtonsView();
-            editquestion.setVisibility(View.VISIBLE);
-            addQuestionText.setText("");
-            first = false;
-        }
+
         if (v == getDescriptionVoiceBtn) {
             promptSpeechInput();
         }
-        if (v == getQuestionVoiceBtn) {
-            promptSpeechInput();
-        }
-        if (v == saveQuestionBtn) {
-            question = addQuestionText.getText().toString();
-            volleyPut(saveQ);
-            putButtonsBack();
-        }
+
+
         if (v == saveDescriptionBtn) {
             description = addDescriptionText.getText().toString();
             volleyPut(saveD);
@@ -279,7 +251,6 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void deleteButtonsView(){
-        questionAddBtn.setVisibility(View.INVISIBLE);
         descriptionAddBtn.setVisibility(View.INVISIBLE);
         deleteImageBtn.setVisibility(View.INVISIBLE);
         nextImage.setVisibility(View.INVISIBLE);
@@ -287,8 +258,6 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
     }
     public void putButtonsBack(){
         editdescription.setVisibility(View.INVISIBLE);
-        editquestion.setVisibility(View.INVISIBLE);
-        questionAddBtn.setVisibility(View.VISIBLE);
         descriptionAddBtn.setVisibility(View.VISIBLE);
         deleteImageBtn.setVisibility(View.VISIBLE);
         nextImage.setVisibility(View.VISIBLE);
@@ -385,12 +354,10 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onResponse(String comeBack){
                 String type = comeBack.trim();
-                editquestion.setVisibility(View.INVISIBLE);
                 editdescription.setVisibility(View.INVISIBLE);
                 if(type.equalsIgnoreCase("successful")){
                     waiting.dismiss();
                     Log.d("myTag", "found");
-                    editquestion.setVisibility(View.INVISIBLE);
                     editdescription.setVisibility(View.INVISIBLE);
 
                 }else{
@@ -412,14 +379,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("id", imageid);
                 map.put("job",thisJob);
-                if(thisJob.equalsIgnoreCase("saveQ")) {
-                    map.put("question", question);
-                }
-                if(thisJob.equalsIgnoreCase("saveD")) {
-                    map.put("description",description);
-                }
-
-
+                map.put("description",description);
 
                 return map;
             }
@@ -488,7 +448,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void loadUpDisplayScreen(){
-        //setUpEmotionBar();
+        backgroundImageDispplay.setImageResource(0);
         Picasso.with(ImageEditActivity.this)
                 .load(imageList.get(counter).edit_image)
                 .skipMemoryCache()

@@ -41,17 +41,7 @@
             android:id="@+id/addDescription"
             android:layout_weight="0.4" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/add_question"
-            android:padding="@dimen/activity_editbox"
-            android:layout_marginLeft="@dimen/activity_edit_padding"
-            android:layout_marginStart="@dimen/activity_edit_padding"
-            android:background="@color/fbBlue"
-            android:textColor="@color/textWhite"
-            android:id="@+id/addquestion"
-            android:layout_weight="0.4" />
+
     </LinearLayout>
 
 
@@ -153,74 +143,4 @@
             android:layout_marginTop="45dp" />
 
     </RelativeLayout>
-
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/questionLayout"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:id="@+id/questionEdit"
-                android:ems="10"
-                android:padding="@dimen/activity_edit_padding"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true" />
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/questionEdit"
-                android:layout_centerHorizontal="true"
-                android:weightSum="1"
-                android:id="@+id/linearLayoutvoice_save2">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/add_voice"
-                    android:padding="@dimen/activity_editbox"
-                    android:layout_marginRight="@dimen/activity_edit_padding"
-                    android:layout_marginEnd="@dimen/activity_edit_padding"
-                    android:background="@color/fbBlue"
-                    android:textColor="@color/textWhite"
-                    android:id="@+id/vBtn2"
-                    android:layout_weight="0.4"/>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/save_question"
-                    android:padding="@dimen/activity_editbox"
-                    android:layout_marginLeft="@dimen/activity_edit_padding"
-                    android:layout_marginStart="@dimen/activity_edit_padding"
-                    android:id="@+id/save2"
-                    android:background="@color/fbBlue"
-                    android:textColor="@color/textWhite"
-                    android:layout_weight="0.4"/>
-            </LinearLayout>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/activity_editbox"
-            android:text="Discard Changes"
-            android:id="@+id/discard2"
-            android:layout_below="@+id/linearLayoutvoice_save2"
-            android:background="@color/fbBlue"
-            android:textColor="@color/textWhite"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="45dp" />
-
-
-    </RelativeLayout>
-
-
-
-
 </RelativeLayout>

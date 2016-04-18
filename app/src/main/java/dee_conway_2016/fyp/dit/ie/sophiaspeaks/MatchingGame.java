@@ -139,7 +139,6 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
                     GamesImage gameElement = new GamesImage();
                     gameElement.game_image_id = obj.getString("id");
                     gameElement.game_image = obj.getString("photo");
-                    gameElement.game_question = obj.getString("question");
                     gameElement.game_description = obj.getString("description");
 
                     threeImagesForGame.add(gameElement);
@@ -225,7 +224,7 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
             correctAnswer = threeImagesForGame.get(n).game_image_id.toString();
         } catch (NullPointerException e) {
         }
-        correctQuestion = threeImagesForGame.get(n).game_question.toString();
+        correctQuestion = "can you see the photograph of..."+threeImagesForGame.get(n).game_description.toString();
         iAmTheRightimage = threeImagesForGame.get(n).game_image.toString();
         voice.speak(correctQuestion, TextToSpeech.QUEUE_FLUSH, null);
     }
@@ -233,7 +232,6 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
     class GamesImage {
         public String game_image_id;
         public String game_image;
-        public String game_question;
         public String game_description;
         public String game_answer = "incorrect";
     }
@@ -265,11 +263,11 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
 
         if (thisAns.equalsIgnoreCase(correctAnswer)) {
             view.setBackgroundColor(getResources().getColor(R.color.green));
-            voice.speak("Well done sophia " + threeImagesForGame.get(ans).game_description, TextToSpeech.QUEUE_FLUSH, null);
+            voice.speak("Well done sophia... This is a photo of... " + threeImagesForGame.get(ans).game_description, TextToSpeech.QUEUE_FLUSH, null);
             iAmTheResult = "correct";
         } else {
             view.setBackgroundColor(getResources().getColor(R.color.red));
-            voice.speak("Hard Luck sophia " + threeImagesForGame.get(ans).game_description, TextToSpeech.QUEUE_FLUSH, null);
+            voice.speak("Hard Luck sophia... This is a photo of... " + threeImagesForGame.get(ans).game_description, TextToSpeech.QUEUE_FLUSH, null);
             iAmTheResult = "wrong";
 
         }

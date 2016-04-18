@@ -113,15 +113,15 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         }else{
 
             if(v==funny){
-                voice.speak("This is funny", TextToSpeech.QUEUE_FLUSH, null);
+                voice.speak(imageList.get(counter%imageList.size()).game_description+"... is funny", TextToSpeech.QUEUE_FLUSH, null);
 
             }
             if(v==like){
-                voice.speak("I like this", TextToSpeech.QUEUE_FLUSH, null);
+                voice.speak("I like..." + imageList.get(counter%imageList.size()).game_description, TextToSpeech.QUEUE_FLUSH, null);
 
             }
             if(v==want){
-                voice.speak("I want this", TextToSpeech.QUEUE_FLUSH, null);
+                voice.speak("I want... "+ imageList.get(counter%imageList.size()).game_description, TextToSpeech.QUEUE_FLUSH, null);
 
             }
             if(v==what){
