@@ -161,6 +161,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         waiting.dismiss();
+                        voice.speak("There may be a network error...", TextToSpeech.QUEUE_FLUSH, null);
                         Log.d("myTag", "Volley Error getMyAlbum");
                     }
                 }
@@ -205,9 +206,10 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
 
     public void loadUpDisplayScreen(){
-        //setUpEmotionBar();
+        displayMe.setImageResource(0);
         Picasso.with(AlbumActivity.this)
                 .load(imageList.get(0).game_image)
+                .noFade()
                 .skipMemoryCache()
                 .into(displayMe);
 

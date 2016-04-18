@@ -206,6 +206,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        voice.speak("There may be a network error", TextToSpeech.QUEUE_FLUSH, null);
                         waiting.dismiss();
                         Log.d("myTag", "volley Error");
                     }
@@ -230,7 +231,6 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
             location = obj.getString("locate");
             description= obj.getString("wordSound");
             imagethemeboolean = obj.getString("theme");
-            Toast.makeText(ParentView.this,imagethemeboolean,Toast.LENGTH_LONG).show();
             uploadCommand(VIEWED.concat(ID).concat(imID));
             changeButtonViewVisible();
 
@@ -292,7 +292,8 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        //Toast.makeText(ParentView.this,"SOME KIND OF ERROR",Toast.LENGTH_LONG).show();
+                        voice.speak("There may be a network error...", TextToSpeech.QUEUE_FLUSH, null);
+                        Log.d("myTag", "Network error");
                     }
                 }
         );
@@ -302,6 +303,8 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
     }
 
     public void volleyTheme(String state) {
+        final ProgressDialog waiting = ProgressDialog.show(this,"Searching...",
+                "Getting Next Image..", false, false);
         final String yes_no = state;
         StringRequest myQuery = new StringRequest(Request.Method.POST, THEME_URL, new Response.Listener<String>() {
 
@@ -309,11 +312,12 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
             public void onResponse(String comeBack) {
                 String type = comeBack.trim();
                 if (type.equalsIgnoreCase("successful")) {
-
+                    waiting.dismiss();
                     Log.d("myTag", "found");
 
 
                 } else {
+                    waiting.dismiss();
                     Log.d("myTag", "notfound");
                 }
             }
@@ -321,7 +325,9 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        voice.speak("There may be a network error", TextToSpeech.QUEUE_FLUSH, null);
+                        waiting.dismiss();
+                        Log.d("myTag", "volley Error");
                     }
                 }
         ) {

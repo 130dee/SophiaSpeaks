@@ -369,6 +369,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
+                        voice.speak("There may be a network error", TextToSpeech.QUEUE_FLUSH, null);
                         waiting.dismiss();
                         Log.d("myTag", "volley error");
                     }
@@ -407,6 +408,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        voice.speak("There may be a network error", TextToSpeech.QUEUE_FLUSH, null);
                         waiting.dismiss();
                     }
                 }

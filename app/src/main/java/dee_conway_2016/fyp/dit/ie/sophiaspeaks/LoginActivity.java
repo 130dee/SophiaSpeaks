@@ -201,8 +201,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        voice.speak("There may be a network error", TextToSpeech.QUEUE_FLUSH, null);
                         waiting.dismiss();
-                        //Toast.makeText(LoginActivity.this,error.toString(),Toast.LENGTH_LONG).show();
                     }
                 }
         ) {

@@ -298,8 +298,9 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         doingShit.dismiss();
-                       // Toast.makeText(TakePhoto.this, error.toString(), Toast.LENGTH_LONG).show();
-                        voice.speak("there may be an internet error", TextToSpeech.QUEUE_FLUSH, null);
+                        voice.speak("There may be a network error", TextToSpeech.QUEUE_FLUSH, null);
+                        Log.d("myTag", "VolleyError");
+
                     }
                 }
 
@@ -389,6 +390,8 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
+                        voice.speak("There may be a network error", TextToSpeech.QUEUE_FLUSH, null);
+                        Log.d("myTag", "VolleyError");
                         waiting.dismiss();
                     }
                 }

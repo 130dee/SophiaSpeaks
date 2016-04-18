@@ -1,5 +1,6 @@
 package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -190,6 +191,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void regMe(String a, String b,String c,String d, String e, String f){
+        final ProgressDialog waiting = ProgressDialog.show(this,"Searching...",
+                "Getting Next Image..", false, false);
         Log.d("myTag", "Trying To login");
 
         final String checkThisUsername = a;
@@ -204,10 +207,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
             public void onResponse(String comeBack){
                 String type = comeBack.trim();
                 if(type.equalsIgnoreCase("successful")){
+                    waiting.dismiss();
                     Log.d("myTag", "found");
                     finish();
 
                 }else{
+                    waiting.dismiss();
                     error.setText(type);
                     error.setVisibility(View.VISIBLE);
                     Log.d("myTag", type);
@@ -217,7 +222,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
+                        voice.speak("There may be a network error", TextToSpeech.QUEUE_FLUSH, null);
                         Log.d("myTag", "VolleyError");
+                        waiting.dismiss();
                     }
                 }
         ){

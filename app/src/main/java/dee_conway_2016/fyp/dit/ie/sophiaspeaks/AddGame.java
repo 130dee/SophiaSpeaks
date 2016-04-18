@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -35,6 +36,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class AddGame extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener{
@@ -53,6 +55,7 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
     ListView theme;
     ListAdapter adapter;
     Vibrator buttonVibe;
+    TextToSpeech voice;
 
 
     ArrayList<Themes> listOfThemes = new ArrayList<Themes>();
@@ -151,6 +154,14 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
             addThisNewGame(gameName);
 
         }
+        voice=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    voice.setLanguage(Locale.UK);
+                }
+            }
+        });
     }
 
     public void addThisNewGame(String addthisStringToTheGameList){
@@ -183,6 +194,7 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
+                        voice.speak("There may be a network error...", TextToSpeech.QUEUE_FLUSH, null);
                         Log.d("myTag", "VolleyError Addgame");
                     }
                 }

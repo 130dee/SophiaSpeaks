@@ -113,6 +113,7 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        voice.speak("There may be a network error", TextToSpeech.QUEUE_FLUSH, null);
                         waiting.dismiss();
                         Log.d("myTag", "volley Error");
                     }
@@ -320,17 +321,18 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
 
 
     public void volleyGuess() {
+        final ProgressDialog waiting = ProgressDialog.show(this,"Searching...",
+                "Authenticating User details..", false, false);
         StringRequest myQuery = new StringRequest(Request.Method.POST, UPDATE_GUESS_URL, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String comeBack) {
                 String type = comeBack.trim();
                 if (type.equalsIgnoreCase("successful")) {
-
+                    waiting.dismiss();
                     Log.d("myTag", "found");
-
-
                 } else {
+                    waiting.dismiss();
                     Log.d("myTag", "notfound");
                 }
             }
@@ -338,7 +340,9 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        voice.speak("There may be a network error", TextToSpeech.QUEUE_FLUSH, null);
+                        waiting.dismiss();
+                        Log.d("myTag", "volley Error");
                     }
                 }
         ) {
