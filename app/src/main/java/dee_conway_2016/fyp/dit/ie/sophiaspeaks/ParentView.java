@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -57,7 +58,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
     public static String location;
     public static String imID;
     public static String question;
-    public static String imagethemeboolean = "no";
+    public static String imagethemeboolean;
     public static String description;
     public static final String SHARED = "globals";
     SharedPreferences shared;
@@ -66,14 +67,9 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
     public static final String SHOW_THIS_URL = "http://52.50.76.1/sophiaFYP/getimages.php?email=";
     public static final String UPDATE_THIS_URL = "http://52.50.76.1/sophiaFYP/update.php?job=";
     public static final String THEME_URL = "http://52.50.76.1/sophiaFYP/themetableupdate.php?";
-    public static final String IM_TAG = "&attach=";
+
     public static final String ID ="id=";
 
-    public static final String DATA="data=";
-
-
-    public static final String GAME = "game&";
-    public static final String WORD = "word&";
     public static final String VIEWED ="viewed&";
 
 
@@ -233,8 +229,8 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
             messageFromSophia= obj.getString("tag");
             location = obj.getString("locate");
             description= obj.getString("wordSound");
-            question = obj.getString("question");
             imagethemeboolean = obj.getString("theme");
+            Toast.makeText(ParentView.this,imagethemeboolean,Toast.LENGTH_LONG).show();
             uploadCommand(VIEWED.concat(ID).concat(imID));
             changeButtonViewVisible();
 
@@ -253,7 +249,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
     }
 
     public void changeButtonViewVisible(){
-        if(!imagethemeboolean.equalsIgnoreCase("no")&&(notCorrected)){
+        if(!imagethemeboolean.equalsIgnoreCase("")&&(notCorrected)){
             correctTick.setVisibility(View.VISIBLE);
             incorrectTick.setVisibility(View.VISIBLE);
             editCurrentImage.setVisibility(View.INVISIBLE);
@@ -347,6 +343,6 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
 
     public void getNextImageAndDisplay(){
 
-        getNextimage(shared.getString("email", "130dee@gmail.com"));
+        getNextimage(shared.getString("email", "email"));
     }
 }
