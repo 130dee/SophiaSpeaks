@@ -249,7 +249,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
     }
 
     public void changeButtonViewVisible(){
-        if(!imagethemeboolean.equalsIgnoreCase("")&&(notCorrected)){
+        if(!imagethemeboolean.equalsIgnoreCase("no")&&(notCorrected)){
             correctTick.setVisibility(View.VISIBLE);
             incorrectTick.setVisibility(View.VISIBLE);
             editCurrentImage.setVisibility(View.INVISIBLE);
