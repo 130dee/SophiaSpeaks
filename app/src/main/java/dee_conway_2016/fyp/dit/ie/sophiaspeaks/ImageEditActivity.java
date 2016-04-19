@@ -52,8 +52,6 @@ import java.util.Map;
 @SuppressWarnings("deprecation")// speak is deprecated, but the testing device is an old device so needs that version
 public class ImageEditActivity extends AppCompatActivity implements View.OnClickListener{
 
-    public static final String SHOW_THIS_URL = "http://52.50.76.1/sophiaFYP/getalltaggedimages.php?email=";
-    public static final String UPDATE_GUESS_URL = "http://52.50.76.1/sophiaFYP/updatefeelings.php?email=";
     public static final String IMAGE_EDIT_URL = "http://52.50.76.1/sophiaFYP/imageedit.php";
     public static final String NEED_EDIT_URL = "http://52.50.76.1/sophiaFYP/needsedit.php?email=";
     Vibrator buttonVibe;
@@ -156,12 +154,9 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
 
             try {
                 imageid = getIntent().getExtras().getString("id");
-
-
             } catch (NullPointerException e ) {
                 imageid = "";
             }
-
 
             try {
                 description = getIntent().getExtras().getString("description");
@@ -446,15 +441,8 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
                     EditImage editElement = new EditImage();
                     editElement.edit_image_id = obj.getString("id");
                     editElement.edit_image = obj.getString("photo");
-                    //editElement.edit_description = obj.getString("description");
-                    //editElement.edit_question = obj.getString("description");
-
-
-
 
                     imageList.add(editElement);
-
-
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

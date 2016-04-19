@@ -293,13 +293,6 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
         setupNewGame();
     }
 
-
-
-
-
-
-
-
     //volley post request to insert the incorrect guess and the images linked to the guess
     public void volleyGuess() {
         final ProgressDialog waiting = ProgressDialog.show(this,"Searching...",

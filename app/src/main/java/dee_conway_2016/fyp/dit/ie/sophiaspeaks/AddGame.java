@@ -120,6 +120,15 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
         // place a listener on the list to act when clicked
         theme.setOnItemClickListener(this);
 
+        voice=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    voice.setLanguage(Locale.UK);
+                }
+            }
+        });
+
     }
 
     @Override//ensure the user is logged in else go to login
@@ -169,14 +178,7 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
             addThisNewGame(gameName);
 
         }
-        voice=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status != TextToSpeech.ERROR) {
-                    voice.setLanguage(Locale.UK);
-                }
-            }
-        });
+
     }
 
     // volley request to insert a new theme game to the theme game table

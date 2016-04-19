@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }// if the last logged in user is a child go to the child view
-     public void goHome(){
+
+    public void goHome(){
          String userType = shared.getString("usertype","user");
          if(userType.equalsIgnoreCase("child")){
              Intent intent = new Intent(this,HomeActivity.class);
