@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,13 +15,16 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.Locale;
 
+@SuppressWarnings("deprecation")// speak is deprecated, but the testing device is an old device so needs that version
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     public static final String SHARED = "globals";
-    private Button open;
+    Button open;
     public SharedPreferences shared;
     Vibrator buttonVibe;
+    TextToSpeech voice;
 
 
     @Override
@@ -32,6 +36,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         shared = getSharedPreferences(SHARED, 0);
         open = (Button) findViewById(R.id.button);
         open.setOnClickListener(this);
+        //build a TextTospeech service
+        voice = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR) {
+                    voice.setLanguage(Locale.UK);
+                }
+            }
+        });
 
         buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
     }
@@ -71,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    @Override
+    @Override// on resume check if there is a curren logged in user
     public void onResume(){
         super.onResume();
         SharedPreferences shared = getSharedPreferences(SHARED, 0);
@@ -82,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
-    }
+    }// if the last logged in user is a child go to the child view
      public void goHome(){
          String userType = shared.getString("usertype","user");
          if(userType.equalsIgnoreCase("child")){

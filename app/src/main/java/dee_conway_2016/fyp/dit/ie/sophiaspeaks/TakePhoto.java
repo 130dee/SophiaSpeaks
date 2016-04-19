@@ -45,14 +45,15 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
 
-@SuppressWarnings("deprecated")
+@SuppressWarnings("deprecation")// speak is deprecated, but the testing device is an old device so needs that version
 public class TakePhoto extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-
+    //attributes needed to successfully run the activity
     public static final String IMAGE = "image";
     public static final String IM_TAG = "tag";
     public static final String EMAIL = "email";
     public static final String TIMESTAMP = "tdate";
     public static final String ISTHEME = "theme";
+    //instance of button press vibrator
     Vibrator buttonVibe;
 
 
@@ -86,10 +87,11 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         setSupportActionBar(toolbar);
         buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-
+        //get access to shared pref file
         shared = getSharedPreferences(SHARED, 0);
+        // get the current image theme
         volleyGetTheme(shared.getString("email", "email"));
-
+        // get instance of voice
         voice = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -99,6 +101,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
             }
         });
 
+        //assign the buttons from the xml layout and attach click listeners
         question =(ImageButton) findViewById(R.id.what);
         funny = (ImageButton) findViewById(R.id.funnyyes);
         like = (ImageButton) findViewById(R.id.likethis);
@@ -116,7 +119,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         cancel.setOnClickListener(this);
         yes.setOnClickListener(this);
         no.setOnClickListener(this);
-
+        //start a camera intent and give it a file name of Myphoto.jpg
         Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory(),
                 "MyPhoto.jpg");
@@ -124,7 +127,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutfileUri);
         startActivityForResult(intent, TAKE_PIC);
 
-
+        // build a google api client to get the location of the device
         buildGoogleApiClient();
     }
 
@@ -139,13 +142,13 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                 .build();
     }
 
-    @Override
+    @Override// generated code
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
     }
 
-    @Override
+    @Override//generated code
     protected void onStop() {
         super.onStop();
         if (mGoogleApiClient.isConnected()) {
@@ -182,7 +185,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
 
     }
 
-    @Override
+    @Override// check for a logged in user
     public void onResume(){
         super.onResume();
         SharedPreferences shared = getSharedPreferences(SHARED, 0);
@@ -211,6 +214,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        //vibrate on a successful button click
         buttonVibe.vibrate(100);
         String toSpeak = "";
         Boolean upload = false;
@@ -252,12 +256,16 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
             setupScreenFeelings();
 
         }
-
+        // set the user email
         String tagOn = shared.getString("email", "");
+        // set the current xy coordinates
         String xyCo_ords = "geo:0,0?q="+x+","+y+"loc";
+        // set the current time
         String time_date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        // audible notification to the user of the next step
         voice.speak(answer+toSpeak, TextToSpeech.QUEUE_FLUSH, null);
         if(upload) {
+            // if the upload boolean is true, volley request the upload of the image to the shared folder
             uploadThis(themeType, toSpeak,tagOn, xyCo_ords, time_date);
         }
 
@@ -331,6 +339,8 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         if (mLastLocation != null) {
             x =  mLastLocation.getLatitude();
             y = mLastLocation.getLongitude();
+
+
         } else {
             //Toast.makeText(this, "Nathin found like", Toast.LENGTH_LONG).show();
         }
@@ -346,11 +356,12 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
-
+    //check for a theme and set up the corresponding screen
     public void setUpScreenQuestion(){
         if(todaysTheme==""){
+            // if no theme go straight to the message screen
             setupScreenFeelings();
-        }else {
+        }else {// go to the yes no screen and ask if the image is a theme image
             emotions.setVisibility(View.INVISIBLE);
             cancel.setVisibility(View.INVISIBLE);
 
@@ -360,7 +371,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
             voice.speak("Is this a photograph of " + todaysTheme, TextToSpeech.QUEUE_FLUSH, null);
         }
     }
-
+    // put all the image sound icons on the screen
     public void setupScreenFeelings(){
         yes.setVisibility(View.INVISIBLE);
         no.setVisibility(View.INVISIBLE);
@@ -369,7 +380,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
 
         voice.speak("Is this a photograph of "+ todaysTheme, TextToSpeech.QUEUE_FLUSH, null);
     }
-
+    // check the database for a current theme
     public void volleyGetTheme(String checkForAtheme){
         final ProgressDialog waiting = ProgressDialog.show(this,"Editing image details...",
                 "Uploading changes..", false, false);

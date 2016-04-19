@@ -2,10 +2,12 @@ package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Vibrator;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,7 +19,13 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.util.Locale;
+@SuppressWarnings("deprecation")// speak is deprecated, but the testing device is an old device so needs that version
 public class ParentHome extends AppCompatActivity implements View.OnClickListener {
+
+    public static final String SHARED = "globals";
+    SharedPreferences shared;
+    TextToSpeech voice;
 
     ImageButton checkmess, editIms, addSub, child, worker;
     Vibrator buttonVibe;
@@ -33,8 +41,9 @@ public class ParentHome extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.activity_parent_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        // get a vibrator class to notify the user of button clicks
         buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
+        //assign the views and the buttons with click listeners
         checkmess = (ImageButton) findViewById(R.id.ckmessages);
         editIms = (ImageButton) findViewById(R.id.editIms);
         addSub = (ImageButton) findViewById(R.id.subBtn);
@@ -48,6 +57,33 @@ public class ParentHome extends AppCompatActivity implements View.OnClickListene
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        //build a TextTospeech service
+        voice = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR) {
+                    voice.setLanguage(Locale.UK);
+                }
+            }
+        });
+    }
+
+    @Override//ensure the user is logged in else go to login
+    public void onResume(){
+        super.onResume();
+        SharedPreferences shared = getSharedPreferences(SHARED, 0);
+        String user = shared.getString("name", "nancy");
+        this.setTitle("Logged in:" +user);
+        if (shared.getString("amLogged","false").equalsIgnoreCase("true")){
+
+
+        }
+        else{
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+        }
+
     }
 
     @Override

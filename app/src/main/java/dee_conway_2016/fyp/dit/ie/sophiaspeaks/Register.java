@@ -7,8 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -27,10 +25,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
-
+@SuppressWarnings("deprecation")// speak is deprecated, but the testing device is an old device so needs that version
 public class Register extends AppCompatActivity implements View.OnClickListener{
-
+    //attributes needed to succcessfully run the activity
     TextToSpeech voice;
     public static final String USERNAME = "user";
     public static final String PASSWORD = "password";
@@ -43,12 +42,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
 
     public static final String SHARED = "globals";
 
-    private String mUsername;
-    private String mPassword;
-    private String mFname;
-    private String mLname;
-    private String mEmailAddress;
-    private String mAccessCode = "parent";
+    String mUsername;
+    String mPassword;
+    String mFname;
+    String mLname;
+    String mEmailAddress;
+    String mAccessCode = "parent";
     SharedPreferences shared;
 
     private EditText uNameView;
@@ -57,7 +56,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     private EditText lNameView;
     private EditText emailView;
 
-    private TextView error,codeText,codeInstructions;
+    TextView error,codeText,codeInstructions;
 
     Button submitReg;
 
@@ -107,7 +106,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         submitReg.setText("Add " + mAccessCode);
         submitReg.setOnClickListener(this);
 
-
+        //build a TextTospeech service
+        voice = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR) {
+                    voice.setLanguage(Locale.UK);
+                }
+            }
+        });
 
 
 

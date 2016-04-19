@@ -20,7 +20,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -42,7 +41,7 @@ import java.util.Map;
 
 @SuppressWarnings("deprcated")
 public class ParentView extends AppCompatActivity implements View.OnClickListener{
-
+    //attributes to allow the activity to run
     Button showNext,editCurrentImage,getNextImage;
     ImageButton showLocation, closeView;
     ImageButton correctTick,incorrectTick;
@@ -80,21 +79,18 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
+        //get access to the shared pref content
         shared = getSharedPreferences(SHARED, 0);
 
         LinearLayout themeBtnLayout = (LinearLayout) findViewById(R.id.linearLayout4);
 
-
+        //assign the buttons to the xml buttons and give them listeners
         showLocation = (ImageButton) findViewById(R.id.whereWasITaken);
         closeView = (ImageButton)findViewById(R.id.close);
         editCurrentImage = (Button)findViewById(R.id.editImage);
         getNextImage = (Button) findViewById(R.id.nextImage);
         correctTick = (ImageButton) findViewById(R.id.correctTheme);
         incorrectTick = (ImageButton) findViewById(R.id.wrongTheme);
-
-
-
         showLocation.setOnClickListener(this);
         closeView.setOnClickListener(this);
         getNextImage.setOnClickListener(this);
@@ -157,16 +153,18 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
         buttonVibe.vibrate(100);
 
         if (v == showLocation){
-            // Creates an Intent that will load a map of San Francisco
+            // open a map and run a query with the coordiates of the image, resulting in a marker being placed
             Uri gmmIntentUri = Uri.parse(location);
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
         }
         else if(v==closeView){
+            //end the activity
             finish();
         }
         else if (v==editCurrentImage){
+            // if the user wants to edit the current image an edit activity will be called
             Intent intent = new Intent(this, ImageEditActivity.class);
             intent.putExtra("image",imURL);
             intent.putExtra("id",imID);
@@ -189,7 +187,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
             changeButtonViewVisible();
         }
     }
-
+    // get the most recently taken, unseen image from the server
     public void getNextimage(String email){
         final ProgressDialog waiting = ProgressDialog.show(this,"Searching...",
                 "Getting Next Image..", false, false);
@@ -217,7 +215,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
         rQue.add(jsonQuery);
 
     }
-
+    // parse the response and display it
     public void displayCurrentImage(JSONArray photosFromServer){
 
         messageFromSophia = "There are no new images from Sophia";
@@ -242,34 +240,32 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
 
     }
 
-    public void changeButtonViewInvisible(){
-        closeView.setVisibility(View.INVISIBLE);
-        showLocation.setVisibility(View.INVISIBLE);
-        nxt.setVisibility(View.INVISIBLE);
-    }
 
+    //only display buttons that are necessary there are two options
+    //if the image is a theme image a correct and x will be displayed.
+    //else the rest of the buttons will be displayed
     public void changeButtonViewVisible(){
         if(!imagethemeboolean.equalsIgnoreCase("no")&&(notCorrected)){
             correctTick.setVisibility(View.VISIBLE);
             incorrectTick.setVisibility(View.VISIBLE);
             editCurrentImage.setVisibility(View.INVISIBLE);
             getNextImage.setVisibility(View.INVISIBLE);
+            closeView.setVisibility(View.INVISIBLE);
+            showLocation.setVisibility(View.INVISIBLE);
+
         }else{
             correctTick.setVisibility(View.INVISIBLE);
             incorrectTick.setVisibility(View.INVISIBLE);
             editCurrentImage.setVisibility(View.VISIBLE);
             getNextImage.setVisibility(View.VISIBLE);
-
-
-
-
+            closeView.setVisibility(View.VISIBLE);
+            showLocation.setVisibility(View.VISIBLE);
+            nxt.setVisibility(View.VISIBLE);
         }
-        closeView.setVisibility(View.VISIBLE);
-        showLocation.setVisibility(View.VISIBLE);
-        nxt.setVisibility(View.VISIBLE);
+
         notCorrected=true;
     }
-
+    //volley request to insert a viewed tag to an image that has been seen by the user
     private void uploadCommand(String a){
         Log.d("myTag", "Trying To Update");
         final String THIS_JOB = UPDATE_THIS_URL.concat(a);
@@ -301,7 +297,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
         RequestQueue thisQ = Volley.newRequestQueue(this);
         thisQ.add(myQuery);
     }
-
+    //volley request to insert the reults of a theme image request
     public void volleyTheme(String state) {
         final ProgressDialog waiting = ProgressDialog.show(this,"Searching...",
                 "Getting Next Image..", false, false);
@@ -346,7 +342,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
         rQue.add(myQuery);
 
     }
-
+    // get the emailaddress of the current user and use it to query the DB for unseen images
     public void getNextImageAndDisplay(){
 
         getNextimage(shared.getString("email", "email"));

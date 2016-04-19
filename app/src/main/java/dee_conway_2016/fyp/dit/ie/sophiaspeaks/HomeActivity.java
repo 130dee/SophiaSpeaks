@@ -19,8 +19,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import java.util.Locale;
+@SuppressWarnings("deprecation")// speak is deprecated, but the testing device is an old device so needs that version
 public class HomeActivity extends AppCompatActivity implements  View.OnClickListener{
-
+    //attributes used to implement the activity
     TextToSpeech voice;
     ImageButton play, album, snap;
     public static final String SHARED = "globals";
@@ -32,14 +34,25 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //instance of the vibrator class to inform of every button click
         buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
+        //assign the buttons and place a listener on them.
         play = (ImageButton) findViewById(R.id.playGame);
         snap = (ImageButton) findViewById(R.id.cameraButton);
         album = (ImageButton) findViewById(R.id.albumButton);
         play.setOnClickListener(this);
         snap.setOnClickListener(this);
         album.setOnClickListener(this);
+
+        //build a TextTospeech service
+        voice = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR) {
+                    voice.setLanguage(Locale.UK);
+                }
+            }
+        });
 
     }
 
@@ -75,7 +88,7 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
 
     }
 
-    @Override
+    @Override//ensure the user is logged in else start the login screen
     public void onResume(){
         super.onResume();
         SharedPreferences shared = getSharedPreferences(SHARED, 0);
@@ -92,7 +105,7 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
 
     }
 
-    @Override
+    @Override// lister for the screen click
     public void onClick(View v) {
         buttonVibe.vibrate(100);
 

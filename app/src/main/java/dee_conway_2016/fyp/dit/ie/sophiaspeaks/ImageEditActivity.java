@@ -49,7 +49,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
+@SuppressWarnings("deprecation")// speak is deprecated, but the testing device is an old device so needs that version
 public class ImageEditActivity extends AppCompatActivity implements View.OnClickListener{
 
     public static final String SHOW_THIS_URL = "http://52.50.76.1/sophiaFYP/getalltaggedimages.php?email=";
@@ -75,7 +75,6 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
     private final int REQ_CODE_SPEECH_INPUT = 100;
 
     Intent intent;
-    boolean first = true;
     String saveD,delete,imageid,description;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -98,13 +97,14 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_image_edit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        // get a vibrator to notify the user of button clicks
         buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         shared = getSharedPreferences(SHARED, 0);
         imageList = new ArrayList<EditImage>();
-
+        //strings to attach to the volley request to set the type of request
         saveD = "saveD";
         delete = "delete";
-
+        //get an instance of the text to speech
         voice = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -119,7 +119,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
 
-
+        //assign all the editboxes and buttons
         editdescription = (RelativeLayout) findViewById(R.id.descriptionLayout);
         descriptionAddBtn = (Button)findViewById(R.id.addDescription);
         descriptionAddBtn.setOnClickListener(this);
@@ -143,7 +143,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         backgroundImageDispplay = (ImageView)findViewById(R.id.backgroundImage);
 
 
-
+        //check to see if the image has been edited already, if yes display the text in the text box
         if(this.getIntent().getExtras()!=null){
             String displayimage;
             try {
@@ -176,9 +176,21 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();  // Always call the superclass method first
+
+    @Override//ensure the user is logged in else go to login
+    public void onResume(){
+        super.onResume();
+        SharedPreferences shared = getSharedPreferences(SHARED, 0);
+        String user = shared.getString("name", "nancy");
+        this.setTitle("Logged in:" + user);
+        if (shared.getString("amLogged","false").equalsIgnoreCase("true")){
+
+
+        }
+        else{
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+        }
 
     }
 
@@ -196,31 +208,35 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    @Override
+    @Override// listener on the buttons
     public void onClick(View v) {
+        //vibrate the device
         buttonVibe.vibrate(100);
         if (v == discard1) {
+            //if not saved replace the buttons on the screen
             putButtonsBack();
         }
         if (v == descriptionAddBtn) {
+            // hide all unescessary buttons
             deleteButtonsView();
+            //bring text box into view
             editdescription.setVisibility(View.VISIBLE);
+            // set the text in the box to be empty
             addDescriptionText.setText("");
-            first = true;
-
         }
-
+        //get a voiceinput to text
         if (v == getDescriptionVoiceBtn) {
             promptSpeechInput();
         }
 
-
+        //save the text in the text box
         if (v == saveDescriptionBtn) {
             description = addDescriptionText.getText().toString();
             volleyPut(saveD);
             putButtonsBack();
 
         }
+        //go to next image
         if (v == nextImage) {
             counter++;
             if (counter >= imageList.size()) {
@@ -231,7 +247,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
                 loadUpDisplayScreen();
             }
 
-        }
+        }//go to last image
         if (v == lastImage) {
             counter--;
             if (counter <= 0) {
@@ -243,19 +259,21 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
             }
 
         }
+        //mark the image as deleted in the image store
         if (v == deleteImageBtn) {
 
             volleyPut(delete);
         }
 
     }
-
+    //clear the screen of unnecessary buttons
     public void deleteButtonsView(){
         descriptionAddBtn.setVisibility(View.INVISIBLE);
         deleteImageBtn.setVisibility(View.INVISIBLE);
         nextImage.setVisibility(View.INVISIBLE);
         lastImage.setVisibility(View.INVISIBLE);
     }
+    //put the buttons back
     public void putButtonsBack(){
         editdescription.setVisibility(View.INVISIBLE);
         descriptionAddBtn.setVisibility(View.VISIBLE);
@@ -264,7 +282,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         lastImage.setVisibility(View.VISIBLE);
     }
 
-
+    //display the voice input
     private void promptSpeechInput() {
         try {
             Thread.sleep(2000);
@@ -284,7 +302,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    @Override
+    @Override//when voice input has been complete
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -292,11 +310,8 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
             case REQ_CODE_SPEECH_INPUT: {
                 if (resultCode == RESULT_OK && null != data) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    if(first){
-                        addDescriptionText.setText(result.get(0).trim().toString());
-                    }else{
-                        addQuestionText.setText(result.get(0).trim().toString());
-                    }
+
+                    addDescriptionText.setText(result.get(0).trim().toString());
 
                 } else if (null == data) {
                     finish();
@@ -305,7 +320,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    @Override
+    @Override//auto generated code to be run when the voice input starts
     public void onStart() {
         super.onStart();
 
@@ -325,7 +340,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         AppIndex.AppIndexApi.start(client, viewAction);
     }
 
-    @Override
+    @Override//auto generated code to be run when the voice input starts
     public void onStop() {
         super.onStop();
 
@@ -344,7 +359,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
     }
-
+    //volley  request to insert the edited tag
     public void volleyPut(String task){
         final ProgressDialog waiting = ProgressDialog.show(this,"Editing image details...",
                 "Uploading changes..", false, false);
@@ -389,7 +404,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         rQue.add(myQuery);
 
     }
-
+    //volley request to get images that have not been edited
     public void getEditPhotos(String email){
         final ProgressDialog waiting = ProgressDialog.show(this,"Searching...",
                 "Getting Next Image..", false, false);
@@ -418,7 +433,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         rQue.add(jsonQuery);
 
     }
-
+    //parse the JSON response to an array
     public void parseJSONtoList(JSONArray photosFromServer) {
 
         if (photosFromServer.length() < 1) {
@@ -448,7 +463,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         }
 
     }
-
+    //display the selected image on the screen using Picasso
     public void loadUpDisplayScreen(){
         backgroundImageDispplay.setImageResource(0);
         Picasso.with(ImageEditActivity.this)
