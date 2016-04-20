@@ -114,9 +114,18 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
         getNextImageAndDisplay();
 
     }
-    @Override
+    @Override//ensure the user is logged in else go to login
     public void onResume(){
         super.onResume();
+        SharedPreferences shared = getSharedPreferences(SHARED, 0);
+        String user = shared.getString("name", "nancy");
+        this.setTitle("Logged in:" + user);
+        if (shared.getString("amLogged","false").equalsIgnoreCase("false")){
+            finish();
+
+        }
+
+
     }
 
     //Inflate the menu bar with icon
@@ -216,29 +225,32 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
 
     }
     // parse the response and display it
-    public void displayCurrentImage(JSONArray photosFromServer){
-
+    public void displayCurrentImage(JSONArray photosFromServer) {
+        
         messageFromSophia = "There are no new images from Sophia";
-        try{
+        try {
             JSONObject obj = null;
             obj = photosFromServer.getJSONObject(0);
 
             imID = obj.getString("id");
             imURL = obj.getString("photo");
-            messageFromSophia= obj.getString("tag");
+            messageFromSophia = obj.getString("tag");
             location = obj.getString("locate");
-            description= obj.getString("wordSound");
+            description = obj.getString("wordSound");
             imagethemeboolean = obj.getString("theme");
             uploadCommand(VIEWED.concat(ID).concat(imID));
             changeButtonViewVisible();
 
 
-        }catch(JSONException e){
-            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();// if there are no new images inform the user and finish.
             voice.speak(messageFromSophia, TextToSpeech.QUEUE_FLUSH, null);
-        }
+            finish();
 
+        }
     }
+
+
 
 
     //only display buttons that are necessary there are two options

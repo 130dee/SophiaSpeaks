@@ -301,7 +301,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     //after a successful login go to the home activity associated with your user type
     public void gotoParent(){
-        Intent intent = new Intent(this, ParentHome.class);
+        Intent intent = new Intent(this, Parent.class);
         startActivity(intent);
     }
     //workers are take to the games activity

@@ -12,6 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -131,6 +134,34 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_items, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+
+        SharedPreferences shared = getSharedPreferences(SHARED, 0);
+        SharedPreferences.Editor editor = shared.edit();
+        editor.putString("name",null);
+        editor.putString("email",null);
+        editor.putString("amLogged","false");
+        editor.putString("type",null);
+        editor.commit();
+
+
+        finish();
+        return true;
+
+
+    }
+
     @Override//ensure the user is logged in else go to login
     public void onResume(){
         super.onResume();
@@ -138,8 +169,7 @@ public class AddGame extends AppCompatActivity implements View.OnClickListener, 
         String user = shared.getString("name", "nancy");
         this.setTitle("Logged in:" + user);
         if (shared.getString("amLogged","false").equalsIgnoreCase("false")){
-            Intent intent = new Intent(this,LoginActivity.class);
-            startActivity(intent);
+            finish();
         }
 
     }

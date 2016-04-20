@@ -23,8 +23,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="37dp"
-        android:hapticFeedbackEnabled="true"
-        android:text="onethirty" />
+        android:hapticFeedbackEnabled="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -36,8 +35,7 @@
         android:layout_alignLeft="@+id/uNameBox"
         android:layout_alignStart="@+id/uNameBox"
         android:hint="@string/hint_password"
-        android:hapticFeedbackEnabled="true"
-        android:text="super4" />
+        android:hapticFeedbackEnabled="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -49,8 +47,7 @@
         android:layout_below="@+id/passwordBox"
         android:layout_alignLeft="@+id/passwordBox"
         android:layout_alignStart="@+id/passwordBox"
-        android:hapticFeedbackEnabled="true"
-        android:text="Dee" />
+        android:hapticFeedbackEnabled="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -62,8 +59,7 @@
         android:layout_below="@+id/fNameBox"
         android:layout_alignLeft="@+id/fNameBox"
         android:layout_alignStart="@+id/fNameBox"
-        android:hapticFeedbackEnabled="true"
-        android:text="Cee" />
+        android:hapticFeedbackEnabled="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -74,8 +70,7 @@
         android:layout_below="@+id/lNameBox"
         android:layout_alignLeft="@+id/lNameBox"
         android:layout_alignStart="@+id/lNameBox"
-        android:hint="@string/hint_email"
-        android:text="130dee@gmail.com" />
+        android:hint="@string/hint_email" />
 
     <Button
         android:layout_width="wrap_content"

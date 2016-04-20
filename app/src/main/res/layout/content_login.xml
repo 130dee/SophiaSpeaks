@@ -44,8 +44,7 @@
         android:id="@+id/loginPassword"
         android:layout_below="@+id/editUserName"
         android:layout_centerHorizontal="true"
-        android:hint="@string/hint_password"
-        android:text="super4" />
+        android:hint="@string/hint_password" />
     <!--Textbox pre enetered for testing-->
 
 

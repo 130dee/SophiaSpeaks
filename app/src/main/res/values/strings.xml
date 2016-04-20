@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SophiaSpeaks</string>
+    <string name="app_name">My Words</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_start_blue_tooth">StartBlueTooth</string>
     <string name="title_activity_login">Sign in</string>
@@ -64,7 +64,7 @@
 
     <string name="imedit_show">http://52.50.76.1/sophiaFYP/getalltaggedimages.php?email=</string>
     <string name="imedit_update">http://52.50.76.1/sophiaFYP/updatefeelings.php?email=</string>
-
+    <string name="title_activity_parent">Parent</string>
 
 
     <!-- Strings related to login -->

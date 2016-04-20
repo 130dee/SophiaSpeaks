@@ -1,16 +1,17 @@
 package dee_conway_2016.fyp.dit.ie.sophiaspeaks;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Activity;
 import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -18,10 +19,12 @@ import android.widget.ImageButton;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import android.os.Bundle;
 
 import java.util.Locale;
-@SuppressWarnings("deprecation")// speak is deprecated, but the testing device is an old device so needs that version
-public class ParentHome extends AppCompatActivity implements View.OnClickListener {
+
+
+public class Parent extends AppCompatActivity implements View.OnClickListener{
 
     public static final String SHARED = "globals";
     SharedPreferences shared;
@@ -38,10 +41,10 @@ public class ParentHome extends AppCompatActivity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_parent_home);
+        setContentView(R.layout.activity_parent);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // get a vibrator class to notify the user of button clicks
+// get a vibrator class to notify the user of button clicks
         buttonVibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         //assign the views and the buttons with click listeners
         checkmess = (ImageButton) findViewById(R.id.ckmessages);
@@ -75,37 +78,40 @@ public class ParentHome extends AppCompatActivity implements View.OnClickListene
         SharedPreferences shared = getSharedPreferences(SHARED, 0);
         String user = shared.getString("name", "nancy");
         this.setTitle("Logged in:" +user);
-        if (shared.getString("amLogged","false").equalsIgnoreCase("true")){
-
+        if (shared.getString("amLogged","false").equalsIgnoreCase("false")){
+            finish();
 
         }
-        else{
-            Intent intent = new Intent(this,LoginActivity.class);
-            startActivity(intent);
-        }
+
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_items, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
-        return super.onOptionsItemSelected(item);
+
+        SharedPreferences shared = getSharedPreferences(SHARED, 0);
+        SharedPreferences.Editor editor = shared.edit();
+        editor.putString("name",null);
+        editor.putString("email",null);
+        editor.putString("amLogged","false");
+        editor.putString("type",null);
+        editor.apply();
+
+
+        finish();
+        return true;
+
+
     }
 
     @Override
@@ -182,5 +188,5 @@ public class ParentHome extends AppCompatActivity implements View.OnClickListene
         client.disconnect();
     }
 
-    
+
 }

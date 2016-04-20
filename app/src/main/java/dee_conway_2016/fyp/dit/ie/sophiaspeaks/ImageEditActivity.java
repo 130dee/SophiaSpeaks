@@ -18,6 +18,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -170,6 +173,33 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
 
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_items, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+
+        SharedPreferences shared = getSharedPreferences(SHARED, 0);
+        SharedPreferences.Editor editor = shared.edit();
+        editor.putString("name",null);
+        editor.putString("email",null);
+        editor.putString("amLogged","false");
+        editor.putString("type",null);
+        editor.commit();
+
+
+        finish();
+        return true;
+
+
+    }
 
 
     @Override//ensure the user is logged in else go to login
@@ -178,13 +208,9 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         SharedPreferences shared = getSharedPreferences(SHARED, 0);
         String user = shared.getString("name", "nancy");
         this.setTitle("Logged in:" + user);
-        if (shared.getString("amLogged","false").equalsIgnoreCase("true")){
+        if (shared.getString("amLogged","false").equalsIgnoreCase("false")){
 
-
-        }
-        else{
-            Intent intent = new Intent(this,LoginActivity.class);
-            startActivity(intent);
+            finish();
         }
 
     }
@@ -432,7 +458,10 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
     public void parseJSONtoList(JSONArray photosFromServer) {
 
         if (photosFromServer.length() < 1) {
+            //if there are no images to be edited
+            //inform the user and exit
             voice.speak("There are no images waiting to be edited", TextToSpeech.QUEUE_FLUSH, null);
+            finish();
         } else {
             try {
                 for (int i = 0; i < photosFromServer.length(); i++) {
