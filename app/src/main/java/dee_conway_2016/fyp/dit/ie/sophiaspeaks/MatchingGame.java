@@ -25,6 +25,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -169,8 +171,6 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
         nextGame = (ImageButton) findViewById(R.id.nextGameBtn);
         nextGame.setOnClickListener(this);
         nextGame.setVisibility(View.INVISIBLE);
-
-
         view = (LinearLayout) findViewById(R.id.gameBackground);
         view.setBackgroundColor(getResources().getColor(R.color.pink));
         a = (ImageView) findViewById(R.id.webView);
@@ -179,21 +179,27 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
         b.setOnTouchListener(this);
         c = (ImageView) findViewById(R.id.webView3);
         c.setOnTouchListener(this);
-        //hide the next game button.
-        nextGame.setVisibility(View.INVISIBLE);
         //shuffle the array of images and pick the first three to be displayed
         Collections.shuffle(threeImagesForGame);
         //put the three image into the views
         Picasso.with(MatchingGame.this)
                 .load(threeImagesForGame.get(0).game_image)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .placeholder(R.drawable.what)
                 .noFade()
                 .into(a);
         Picasso.with(MatchingGame.this)
                 .load(threeImagesForGame.get(1).game_image)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+
                 .noFade()
                 .into(b);
         Picasso.with(MatchingGame.this)
                 .load(threeImagesForGame.get(2).game_image)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .noFade()
                 .into(c);
 
@@ -344,7 +350,10 @@ public class MatchingGame extends AppCompatActivity implements View.OnTouchListe
         c.setImageResource(0);
         Picasso.with(this)
                 .load(threeImagesForGame.get(number).game_image)
-                .skipMemoryCache()
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .placeholder(R.drawable.what)
+                .noFade()
                 .into(b);
         //display the next game button
         nextGame.setVisibility(View.VISIBLE);

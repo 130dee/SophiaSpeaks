@@ -19,6 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -234,6 +236,8 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         displayMe.setImageResource(0);
         Picasso.with(AlbumActivity.this)
                 .load(imageList.get(0).game_image)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .noFade()
                 .into(displayMe);
 

@@ -41,6 +41,8 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -142,6 +144,7 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
         editdescription.setVisibility(View.INVISIBLE);
 
         backgroundImageDispplay = (ImageView)findViewById(R.id.backgroundImage);
+        backgroundImageDispplay.setImageResource(0);
 
 
         //check to see if the image has been edited already, if yes display the text in the text box
@@ -482,11 +485,13 @@ public class ImageEditActivity extends AppCompatActivity implements View.OnClick
     }
     //display the selected image on the screen using Picasso
     public void loadUpDisplayScreen(){
+        backgroundImageDispplay = (ImageView)findViewById(R.id.backgroundImage);
         backgroundImageDispplay.setImageResource(0);
         Picasso.with(ImageEditActivity.this)
                 .load(imageList.get(counter).edit_image)
-                .skipMemoryCache()
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .into(backgroundImageDispplay);
+
         imageid= imageList.get(counter).edit_image_id;
 
     }

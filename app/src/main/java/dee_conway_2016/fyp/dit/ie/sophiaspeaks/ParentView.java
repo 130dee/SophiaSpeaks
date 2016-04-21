@@ -29,6 +29,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -248,6 +250,11 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
             finish();
 
         }
+        Picasso.with(ParentView.this).load(imURL)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .noFade()
+                .into(nxt);
     }
 
 
@@ -272,9 +279,10 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
             getNextImage.setVisibility(View.VISIBLE);
             closeView.setVisibility(View.VISIBLE);
             showLocation.setVisibility(View.VISIBLE);
-            nxt.setVisibility(View.VISIBLE);
+
         }
 
+        nxt.setVisibility(View.VISIBLE);
         notCorrected=true;
     }
     //volley request to insert a viewed tag to an image that has been seen by the user
@@ -294,7 +302,7 @@ public class ParentView extends AppCompatActivity implements View.OnClickListene
                     Log.d("myTag", "notUpdated");
                     //Toast.makeText(ParentView.this,type+"WAS NOT UPDATED",Toast.LENGTH_LONG).show();
                 }voice.speak(messageFromSophia, TextToSpeech.QUEUE_FLUSH, null);
-                Picasso.with(ParentView.this).load(imURL).into(nxt);
+
             }
         },
                 new Response.ErrorListener(){
